@@ -107,8 +107,8 @@ The breakdown of the structure is the following:
 * Setup of the nested class contains initialization for happy path test, which includes objects initialization and mock behavior 
 * The happy path contains only action and verification
 * The negative scenario contains modification for the happy path to support the behavior change, action and verification
-* The tip #2 is 'Use Fixtures'.
 
+## The tip #2 is 'Use Fixtures'.
 
 Fixtures are the library class, which initializes objects for testing.
 It gives the ability to keep all test objects in one place and avoid creating bulky helper classes per object.
@@ -164,5 +164,7 @@ internal inner class SaveExampleDetails
 Craft your unit tests, style comes with repetition.
 
 Reach me out
-Email: contact@pavelsusloparov.com
-GitHub: https://github.com/PavelSusloparov
+
+*Email:* contact@pavelsusloparov.com
+
+*GitHub:* https://github.com/PavelSusloparov
