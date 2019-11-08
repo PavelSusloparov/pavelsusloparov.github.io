@@ -2,12 +2,17 @@
 
 Powered by [https://jekyllrb.com/docs/](https://jekyllrb.com/docs/)
 
-Remove Gemfile.lock
-```bash
-bundle install
-```
-
-Run app locally
+### Run app locally
 ```bash
 bundle exec jekyll serve
+```
+
+## Help
+
+### Hard upgrade packages
+
+1. Remove Gemfile.lock
+2. Install dependencies
+```bash
+bundle install
 ```

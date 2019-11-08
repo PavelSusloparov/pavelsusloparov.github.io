@@ -162,9 +162,3 @@ internal inner class SaveExampleDetails
 ```
 
 Craft your unit tests, style comes with repetition.
-
-Reach me out
-
-*Email:* contact@pavelsusloparov.com
-
-*GitHub:* https://github.com/PavelSusloparov
