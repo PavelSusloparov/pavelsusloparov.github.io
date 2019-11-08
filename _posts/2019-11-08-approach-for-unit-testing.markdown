@@ -4,14 +4,13 @@ title:  "Approach for unit testing"
 date:   2019-11-08 10:22:36 -0500
 categories: programming
 ---
-# Approach for unit testing
 
 The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
 Confidence in your code is crucial.
 
 I share two tips to make you better in the art of unit testing.
 
-## Tip #1 is 'Use defined structure.'
+### Tip #1 is 'Use defined structure.'
 
 I fun of Kotlin and Spring Boot with dependency injection.
 It gives simple ability to initialize the class under the test and mock out the dependencies.
@@ -108,7 +107,7 @@ The breakdown of the structure is the following:
 * The happy path contains only action and verification
 * The negative scenario contains modification for the happy path to support the behavior change, action and verification
 
-## The tip #2 is 'Use Fixtures'.
+### The tip #2 is 'Use Fixtures'.
 
 Fixtures are the library class, which initializes objects for testing.
 It gives the ability to keep all test objects in one place and avoid creating bulky helper classes per object.
@@ -149,15 +148,17 @@ exampleDetails = Fixtures.External.exampleDetails().copy(
         attribute = "value")
 ```
 
-## The tip #3 is 'Test your Dao with in-memory database'.
+### The tip #3 is 'Test your Dao with in-memory database'.
 
 Have different type testing configuration for Controller, Service and Dao classes
 Controller and Service should use mocks and isolate method under the test.
 Dao should have access to the in memory instance of database, insert data in setup and clean the data in tear down type of methods.
 
 ```kotlin
-@DataMongoTest@Import(MongoConfig::class, RetryConfig::class, ExampleDao::class)
-@Nested@DisplayName("saveExampleDetails")
+@DataMongoTest
+@Import(MongoConfig::class, RetryConfig::class, ExampleDao::class)
+@Nested
+@DisplayName("saveExampleDetails")
 internal inner class SaveExampleDetails
 ```
 
