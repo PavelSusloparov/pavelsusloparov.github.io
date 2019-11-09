@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-08T10:50:58-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Approach for unit testing</title><link href="http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html" rel="alternate" type="text/html" title="Approach for unit testing" /><published>2019-11-08T10:22:36-05:00</published><updated>2019-11-08T10:22:36-05:00</updated><id>http://localhost:4000/programming/2019/11/08/approach-for-unit-testing</id><content type="html" xml:base="http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html">&lt;h1 id=&quot;approach-for-unit-testing&quot;&gt;Approach for unit testing&lt;/h1&gt;
-
-&lt;p&gt;The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-09T14:11:11-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Pavel Susloparov Blog</title><subtitle>Post about programming and processes</subtitle><entry><title type="html">Approach for unit testing</title><link href="http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html" rel="alternate" type="text/html" title="Approach for unit testing" /><published>2019-11-08T10:22:36-05:00</published><updated>2019-11-08T10:22:36-05:00</updated><id>http://localhost:4000/programming/2019/11/08/approach-for-unit-testing</id><content type="html" xml:base="http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html">&lt;p&gt;The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
 Confidence in your code is crucial.&lt;/p&gt;
 
 &lt;p&gt;I share two tips to make you better in the art of unit testing.&lt;/p&gt;
 
-&lt;h2 id=&quot;tip-1-is-use-defined-structure&quot;&gt;Tip #1 is ‘Use defined structure.’&lt;/h2&gt;
+&lt;h3 id=&quot;tip-1-is-use-defined-structure&quot;&gt;Tip #1 is ‘Use defined structure.’&lt;/h3&gt;
 
 &lt;p&gt;I fun of Kotlin and Spring Boot with dependency injection.
 It gives simple ability to initialize the class under the test and mock out the dependencies.
@@ -100,8 +98,9 @@ I love to use IntelijIdea and it has code snapshot shortcut saving functionality
   &lt;li&gt;Setup of the nested class contains initialization for happy path test, which includes objects initialization and mock behavior&lt;/li&gt;
   &lt;li&gt;The happy path contains only action and verification&lt;/li&gt;
   &lt;li&gt;The negative scenario contains modification for the happy path to support the behavior change, action and verification&lt;/li&gt;
-  &lt;li&gt;The tip #2 is ‘Use Fixtures’.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h3 id=&quot;the-tip-2-is-use-fixtures&quot;&gt;The tip #2 is ‘Use Fixtures’.&lt;/h3&gt;
 
 &lt;p&gt;Fixtures are the library class, which initializes objects for testing.
 It gives the ability to keep all test objects in one place and avoid creating bulky helper classes per object.&lt;/p&gt;
@@ -123,7 +122,7 @@ It gives the ability to keep all test objects in one place and avoid creating bu
 
         &lt;span class=&quot;k&quot;&gt;companion&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
-            &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;exampleDetails&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
                     &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
                     &lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;attribute&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
                     &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LocalDateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
@@ -140,21 +139,17 @@ If the object needs to be modified, you can edit it in the place where it is nee
         &lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;the-tip-3-is-test-your-dao-with-in-memory-database&quot;&gt;The tip #3 is ‘Test your Dao with in-memory database’.&lt;/h2&gt;
+&lt;h3 id=&quot;the-tip-3-is-test-your-dao-with-in-memory-database&quot;&gt;The tip #3 is ‘Test your Dao with in-memory database’.&lt;/h3&gt;
 
 &lt;p&gt;Have different type testing configuration for Controller, Service and Dao classes
 Controller and Service should use mocks and isolate method under the test.
 Dao should have access to the in memory instance of database, insert data in setup and clean the data in tear down type of methods.&lt;/p&gt;
 
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@DataMongoTest@Import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MongoConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RetryConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@Nested@DisplayName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;saveExampleDetails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@DataMongoTest&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MongoConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RetryConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Nested&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@DisplayName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;saveExampleDetails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;inner&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SaveExampleDetails&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Craft your unit tests, style comes with repetition.&lt;/p&gt;
-
-&lt;p&gt;Reach me out&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Email:&lt;/em&gt; contact@pavelsusloparov.com&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;GitHub:&lt;/em&gt; https://github.com/PavelSusloparov&lt;/p&gt;</content><author><name></name></author><summary type="html">Approach for unit testing</summary></entry></feed>
+&lt;p&gt;Craft your unit tests, style comes with repetition.&lt;/p&gt;</content><author><name></name></author><summary type="html">The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial.</summary></entry></feed>

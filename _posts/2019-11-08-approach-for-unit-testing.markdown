@@ -130,7 +130,7 @@ class Fixtures {
 
         companion object {
 
-            fun exampleDetails = ExampleDetails(
+            fun exampleDetails() = ExampleDetails(
                     id = "id",
                     attribute = "attribute",
                     date = LocalDateTime.now()

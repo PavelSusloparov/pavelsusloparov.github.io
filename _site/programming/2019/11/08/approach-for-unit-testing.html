@@ -2,25 +2,25 @@
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Approach for unit testing | Your awesome title</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Approach for unit testing | Pavel Susloparov Blog</title>
+<meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Approach for unit testing" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Approach for unit testing" />
-<meta property="og:description" content="Approach for unit testing" />
+<meta name="description" content="The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial." />
+<meta property="og:description" content="The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial." />
 <link rel="canonical" href="http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html" />
 <meta property="og:url" content="http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html" />
-<meta property="og:site_name" content="Your awesome title" />
+<meta property="og:site_name" content="Pavel Susloparov Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-08T10:22:36-05:00" />
 <script type="application/ld+json">
-{"description":"Approach for unit testing","@type":"BlogPosting","url":"http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html","headline":"Approach for unit testing","dateModified":"2019-11-08T10:22:36-05:00","datePublished":"2019-11-08T10:22:36-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html"},"@context":"https://schema.org"}</script>
+{"description":"The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial.","headline":"Approach for unit testing","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html"},"@type":"BlogPosting","url":"http://localhost:4000/programming/2019/11/08/approach-for-unit-testing.html","dateModified":"2019-11-08T10:22:36-05:00","datePublished":"2019-11-08T10:22:36-05:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Your awesome title" /></head>
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Blog" /></head>
 <body><header class="site-header" role="banner">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Your awesome title</a><nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Pavel Susloparov Blog</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -45,14 +45,12 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h1 id="approach-for-unit-testing">Approach for unit testing</h1>
-
-<p>The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
+    <p>The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
 Confidence in your code is crucial.</p>
 
 <p>I share two tips to make you better in the art of unit testing.</p>
 
-<h2 id="tip-1-is-use-defined-structure">Tip #1 is ‘Use defined structure.’</h2>
+<h3 id="tip-1-is-use-defined-structure">Tip #1 is ‘Use defined structure.’</h3>
 
 <p>I fun of Kotlin and Spring Boot with dependency injection.
 It gives simple ability to initialize the class under the test and mock out the dependencies.
@@ -147,8 +145,9 @@ I love to use IntelijIdea and it has code snapshot shortcut saving functionality
   <li>Setup of the nested class contains initialization for happy path test, which includes objects initialization and mock behavior</li>
   <li>The happy path contains only action and verification</li>
   <li>The negative scenario contains modification for the happy path to support the behavior change, action and verification</li>
-  <li>The tip #2 is ‘Use Fixtures’.</li>
 </ul>
+
+<h3 id="the-tip-2-is-use-fixtures">The tip #2 is ‘Use Fixtures’.</h3>
 
 <p>Fixtures are the library class, which initializes objects for testing.
 It gives the ability to keep all test objects in one place and avoid creating bulky helper classes per object.</p>
@@ -170,7 +169,7 @@ It gives the ability to keep all test objects in one place and avoid creating bu
 
         <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
 
-            <span class="k">fun</span> <span class="nf">exampleDetails</span> <span class="p">=</span> <span class="nc">ExampleDetails</span><span class="p">(</span>
+            <span class="k">fun</span> <span class="nf">exampleDetails</span><span class="p">()</span> <span class="p">=</span> <span class="nc">ExampleDetails</span><span class="p">(</span>
                     <span class="n">id</span> <span class="p">=</span> <span class="s">"id"</span><span class="p">,</span>
                     <span class="n">attribute</span> <span class="p">=</span> <span class="s">"attribute"</span><span class="p">,</span>
                     <span class="n">date</span> <span class="p">=</span> <span class="nc">LocalDateTime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
@@ -187,24 +186,20 @@ If the object needs to be modified, you can edit it in the place where it is nee
         <span class="n">attribute</span> <span class="p">=</span> <span class="s">"value"</span><span class="p">)</span>
 </code></pre></div></div>
 
-<h2 id="the-tip-3-is-test-your-dao-with-in-memory-database">The tip #3 is ‘Test your Dao with in-memory database’.</h2>
+<h3 id="the-tip-3-is-test-your-dao-with-in-memory-database">The tip #3 is ‘Test your Dao with in-memory database’.</h3>
 
 <p>Have different type testing configuration for Controller, Service and Dao classes
 Controller and Service should use mocks and isolate method under the test.
 Dao should have access to the in memory instance of database, insert data in setup and clean the data in tear down type of methods.</p>
 
-<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@DataMongoTest@Import</span><span class="p">(</span><span class="nc">MongoConfig</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">RetryConfig</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">ExampleDao</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
-<span class="nd">@Nested@DisplayName</span><span class="p">(</span><span class="s">"saveExampleDetails"</span><span class="p">)</span>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@DataMongoTest</span>
+<span class="nd">@Import</span><span class="p">(</span><span class="nc">MongoConfig</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">RetryConfig</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">ExampleDao</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Nested</span>
+<span class="nd">@DisplayName</span><span class="p">(</span><span class="s">"saveExampleDetails"</span><span class="p">)</span>
 <span class="k">internal</span> <span class="k">inner</span> <span class="kd">class</span> <span class="nc">SaveExampleDetails</span>
 </code></pre></div></div>
 
 <p>Craft your unit tests, style comes with repetition.</p>
-
-<p>Reach me out</p>
-
-<p><em>Email:</em> contact@pavelsusloparov.com</p>
-
-<p><em>GitHub:</em> https://github.com/PavelSusloparov</p>
 
   </div><a class="u-url" href="/programming/2019/11/08/approach-for-unit-testing.html" hidden></a>
 </article>
@@ -215,19 +210,19 @@ Dao should have access to the in memory instance of database, insert data in set
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Your awesome title</h2>
+    <h2 class="footer-heading">Pavel Susloparov Blog</h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
-          <li class="p-name">Your awesome title</li><li><a class="u-email" href="mailto:your-email@example.com">your-email@example.com</a></li></ul>
+          <li class="p-name">Pavel Susloparov Blog</li><li><a class="u-email" href="mailto:contact@pavelsusloparov.com">contact@pavelsusloparov.com</a></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/PavelSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">PavelSusloparov</span></a></li><li><a href="https://www.twitter.com/"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username"></span></a></li></ul>
 </div>
 
       <div class="footer-col footer-col-3">
-        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+        <p>Post about programming and processes</p>
       </div>
     </div>
 
