@@ -89,7 +89,8 @@ fun tagValidator(vararg tags: String?) {
         throw Exception("Invalid tags: ${tags.contentToString()}")
     }
     require(tags.size % 2 != 1) { 
-        "Tag size must be even, it is a set of key=value pairs: ${tags.contentToString()}"
+        "Tag size must be even,
+         it is a set of key=value pairs: ${tags.contentToString()}"
     }
 }
 
@@ -176,7 +177,7 @@ since it is a simple wrapper on top of the library.
 
 With the class above, we can start using it. However, there is a better way to provide the interface with Spring Boot.
 The objective is to avoid specifying applicationName during every class initialization
-and take advantage of dependency injection for testing the fact of sending the metric on the client-side.
+and take advantage of Spring Boot's dependency injection for unit test the fact of sending the metric on the client-side.
 
 For that, we create a MetricSender factory class.
 

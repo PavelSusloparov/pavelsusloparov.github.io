@@ -128,8 +128,9 @@ The easiest way is to create a shared library and store the jar in a place where
         <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"Invalid tags: ${tags.contentToString()}"</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="nf">require</span><span class="p">(</span><span class="n">tags</span><span class="p">.</span><span class="n">size</span> <span class="p">%</span> <span class="m">2</span> <span class="p">!=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span> 
-        <span class="s">"Tag size must be even, it is a set of key=value pairs: ${tags.contentToString()}"</span>
-    <span class="p">}</span>
+        <span class="s">"Tag size must be even,
+</span>         <span class="n">it</span> <span class="k">is</span> <span class="n">a</span> <span class="k">set</span> <span class="n">of</span> <span class="n">key</span><span class="p">=</span><span class="n">value</span> <span class="n">pairs</span><span class="p">:</span> <span class="err">$</span><span class="p">{</span><span class="n">tags</span><span class="p">.</span><span class="nf">contentToString</span><span class="p">()}</span><span class="s">"
+</span>    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="cm">/**</span><span class="err">
@@ -217,7 +218,7 @@ since it is a simple wrapper on top of the library.</p>
 
 <p>With the class above, we can start using it. However, there is a better way to provide the interface with Spring Boot.
 The objective is to avoid specifying applicationName during every class initialization
-and take advantage of dependency injection for testing the fact of sending the metric on the client-side.</p>
+and take advantage of Spring Boot’s dependency injection for unit test the fact of sending the metric on the client-side.</p>
 
 <p>For that, we create a MetricSender factory class.</p>
 
