@@ -3,17 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Personal Blog | Read about programming and software engineering processes</title>
+<title>GitHub commit hooks for better release notes | Personal Blog</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Personal Blog" />
+<meta property="og:title" content="GitHub commit hooks for better release notes" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Read about programming and software engineering processes" />
-<meta property="og:description" content="Read about programming and software engineering processes" />
-<link rel="canonical" href="http://localhost:4000/" />
-<meta property="og:url" content="http://localhost:4000/" />
+<meta name="description" content="I love using automation for improving the team processes." />
+<meta property="og:description" content="I love using automation for improving the team processes." />
+<link rel="canonical" href="http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook.html" />
+<meta property="og:url" content="http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook.html" />
 <meta property="og:site_name" content="Personal Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-16T16:32:36-05:00" />
 <script type="application/ld+json">
-{"description":"Read about programming and software engineering processes","headline":"Personal Blog","@type":"WebSite","url":"http://localhost:4000/","name":"Personal Blog","@context":"http://schema.org"}</script>
+{"description":"I love using automation for improving the team processes.","headline":"GitHub commit hooks for better release notes","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook.html"},"@type":"BlogPosting","url":"http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook.html","dateModified":"2019-11-16T16:32:36-05:00","datePublished":"2019-11-16T16:32:36-05:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Personal Blog" /></head>
 <body><header class="site-header" role="banner">
@@ -33,46 +35,28 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
-<h2 class="post-list-heading">Posts</h2>
-    <ul class="post-list"><li><span class="post-meta">Nov 19, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/gradle,/docker,/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html">
-            Dockerize SpringBoot application with JIB
-          </a>
-        </h3></li><li><span class="post-meta">Nov 18, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/gradle,/jacoco,/code/coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html">
-            Unit tests code coverage with Jacoco
-          </a>
-        </h3></li><li><span class="post-meta">Nov 17, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/gradle,/testing,/packaging/2019/11/17/source-set-for-gradle-project.html">
-            Custom source set for Gradle project
-          </a>
-        </h3></li><li><span class="post-meta">Nov 16, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/github,/automation/2019/11/16/github-commit-hook.html">
-            GitHub commit hooks for better release notes
-          </a>
-        </h3></li><li><span class="post-meta">Nov 12, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/graphql/2019/11/12/generate-objects-based-on-GraphQL-schema.html">
-            Generate objects based on GraphQL schema
-          </a>
-        </h3></li><li><span class="post-meta">Nov 10, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/springboot,/datadog/2019/11/10/DataDog-metrics-with-spring-boot-and-micrometer.html">
-            DataDog metrics with Spring Boot and Micrometer
-          </a>
-        </h3></li><li><span class="post-meta">Nov 8, 2019</span>
-        <h3>
-          <a class="post-link" href="/programming,/junit5,/springboot/2019/11/08/approach-for-unit-testing.html">
-            Approach for unit testing
-          </a>
-        </h3></li></ul>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-    <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p></div>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">GitHub commit hooks for better release notes</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-16T16:32:36-05:00" itemprop="datePublished">Nov 16, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I love using automation for improving the team processes.</p>
+
+<p>If you need to have a clean commit history and be able to use it for release notes, you want to use GitHub local hook.
+It gives ability to add ticket tracking system number(in my case JIRA) to every commit message automatically.</p>
+
+<p>The trick is to name your branch as feature/PROJ-XXXX-branch-description and for every commit, <code class="language-plaintext highlighter-rouge">PROJ-XXXX</code> prepends
+automatically to the message as <code class="language-plaintext highlighter-rouge">[PROJ-XXXX] commit description</code></p>
+
+<p>Find scripts and installation instruction in <a href="https://github.com/PavelSusloparov/git-hook">https://github.com/PavelSusloparov/git-hook</a></p>
+
+  </div><a class="u-url" href="/programming,/github,/automation/2019/11/16/github-commit-hook.html" hidden></a>
+</article>
 
       </div>
     </main><footer class="site-footer h-card">
