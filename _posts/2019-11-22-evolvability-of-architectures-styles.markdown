@@ -7,6 +7,41 @@ categories: architecture
 
 ## Architecture classification
 
+* Incremental change for the application means that a developer makes a new feature or fix a bug in the application code.
+* Deployment means bundling application code into an image or binary and deploying it to the production server.
+* Appropriate coupling implies the level of interaction between components within the application.
+* Fitness function represents each requirement for architecture.
+
+### Examples of Fitness Functions
+
+* Application metrics
+* Architecture metrics
+* Unit tests
+* Contract tests
+* Integration tests
+* Monitors
+
+### Fitness function (FF) classification
+
+* Atomic *VS* Holistic
+    - Atomic FF run against a singular context
+    - Holistic FF run against a shared context
+* Triggered *VS* Continual
+    - Triggered FF run based on a particular event
+    - Continual FF execute constant verification of architectural aspect
+* Static *VS* Dynamic
+    - Static FF have a fixed result, such as binary Pass/Fail. Those are usually metrics or tests.
+    - Dynamic FF rely on shifting definition based on extra context.
+* Automated *VS* Manual
+* Temporal
+    - It is usually a time component, which will be removed in future.
+* Intentional Over Emergent
+    - Intentional FF defines at the beginning of the project
+    - Emergent FF defines as project evolves and developers find *Unknown Unknowns*
+* Domain-Specific
+    - Additional requirements such as stress test or security governance
+
+Since we defined basic definitions, let's look at the known architectures.
 The table below designed to help consider architecture for a new project or evolve existing project to desired level based on functional and non functional requirements.
 
 | Architecture Classification | How hard is to make an incremental change? | How hard is to make a deployment? | How hard is to make a guided change with a fitness function? | What is the level of appropriate coupling? |
