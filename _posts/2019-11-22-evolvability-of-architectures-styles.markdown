@@ -5,7 +5,7 @@ date:   2019-11-22 17:35:36 -0500
 categories: architecture
 ---
 
-The post describes common architecture approaches and compare them based on given architecture problem.
+The post describes conventional software architecture approaches and compares them based on the given architecture problem.
 
 ## Definitions
 
