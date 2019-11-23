@@ -58,14 +58,14 @@ The table below designed to help consider architecture for a new project or evol
 | Modular monolith | Easy | Difficult | Easy | Normal |
 | [Micro kernel](https://en.wikipedia.org/wiki/Monolithic_kernel) | Easy | Easy for plugins. Difficult for core | Easy | Normal |
 | **Event Driven** |				
-| [Brokers](https://en.wikipedia.org/wiki/Broker_pattern) | Easy for component. Medium for application | Easy with proper Continuous Integration | Easy. Difficult to test e2e scenarios | Loosely |
+| [Brokers](https://en.wikipedia.org/wiki/Broker_pattern) | Easy for component. Medium for application | Easy with proper Continuous Integration | Easy. Difficult to test e2e scenarios | Loose |
 | [Mediators](https://en.wikipedia.org/wiki/Mediator_pattern)	| Easy for component. Medium for application | Easy. Normal for testing e2e scenarios | Normal |
 | **Service Oriented** | 					
 | [Enterprise Service Bus driven](https://en.wikipedia.org/wiki/Enterprise_service_bus) | Difficult | Difficult | Difficult| Normal |
 | [Service-oriented](https://en.wikipedia.org/wiki/Service-oriented_architecture)	| Normal | Normal | Normal | Normal |
-| [Micro Services](https://en.wikipedia.org/wiki/Microservices) | Easy | Easy with proper Continuous Integration | Easy | Loosely |
+| [Micro Services](https://en.wikipedia.org/wiki/Microservices) | Easy | Easy with proper Continuous Integration | Easy | Loose |
 | **Server-less**					
-| [Lambda functions](https://en.wikipedia.org/wiki/Lambda_architecture) | Easy | Easy | Easy | Loosely |
+| [Lambda functions](https://en.wikipedia.org/wiki/Lambda_architecture) | Easy | Easy | Easy | Loose |
 
 ### Coupling classification
 
