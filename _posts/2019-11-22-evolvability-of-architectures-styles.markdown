@@ -5,7 +5,9 @@ date:   2019-11-22 17:35:36 -0500
 categories: architecture
 ---
 
-## Architecture classification
+The post describes common architecture approaches and compare them based on given architecture problem.
+
+## Definitions
 
 * Incremental change for the application means that a developer makes a new feature or fix a bug in the application code.
 * Deployment means bundling application code into an image or binary and deploying it to the production server.
@@ -40,6 +42,8 @@ categories: architecture
     - Emergent FF defines as project evolves and developers find *Unknown Unknowns*
 * Domain-Specific
     - Additional requirements such as stress test or security governance
+
+## Architecture classifications
 
 Since we defined basic definitions, let's look at the known architectures.
 The table below designed to help consider architecture for a new project or evolve existing project to desired level based on functional and non functional requirements.
