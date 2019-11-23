@@ -18,10 +18,12 @@ The post describes conventional software architecture approaches and compares th
 
 * Application metrics
 * Architecture metrics
+* Business logic metrics
 * Unit tests
 * Contract tests
 * Integration tests
-* Monitors
+* Certification for changes
+* Compliance certification
 
 ### Fitness function (FF) classification
 
