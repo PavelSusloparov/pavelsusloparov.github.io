@@ -2,7 +2,7 @@
 layout: post
 title:  "DataDog metrics with Spring Boot and Micrometer"
 date:   2019-11-10 14:20:36 -0500
-categories: programming, SpringBoot, DataDog
+categories: Kotlin, SpringBoot, DataDog
 ---
 
 Monitoring is crucial when it comes to application support. In this post, I would show how to manage to send metrics to

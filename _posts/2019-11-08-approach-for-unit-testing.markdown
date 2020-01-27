@@ -2,7 +2,7 @@
 layout: post
 title:  "Approach for unit testing"
 date:   2019-11-08 10:22:36 -0500
-categories: programming, JUnit5, SpringBoot
+categories: Kotlin, JUnit5, SpringBoot
 ---
 
 The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.

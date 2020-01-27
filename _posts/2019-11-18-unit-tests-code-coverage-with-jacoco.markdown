@@ -2,7 +2,7 @@
 layout: post
 title:  "Unit tests code coverage with Jacoco"
 date:   2019-11-18 9:49:36 -0500
-categories: programming, gradle, jacoco, code coverage
+categories: Kotlin, Gradle, Jacoco, CodeCoverage
 ---
 
 Code coverage is a code quality metric.
