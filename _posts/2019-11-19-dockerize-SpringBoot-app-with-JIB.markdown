@@ -2,7 +2,7 @@
 layout: post
 title:  "Dockerize SpringBoot application with JIB"
 date:   2019-11-19 9:49:36 -0500
-categories: Kotlin, Gradle, Docker, Jib
+categories: gradle docker jib
 ---
 
 JIB is the plugin which create a docker container from you SpringBoot application.

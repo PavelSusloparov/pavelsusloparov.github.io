@@ -2,7 +2,7 @@
 layout: post
 title:  "Custom source set for Gradle project"
 date:   2019-11-17 18:32:36 -0500
-categories: Kotlin, Gradle, Testing, Packaging
+categories: kotlin test source-sets
 ---
 
 `Source set` is a package, which has it is own compilation and runtime configuration as well as dependencies.
