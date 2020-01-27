@@ -21,7 +21,7 @@ Let's look at Kotlin's built-in stream support and show how to send data through
 ### Channels Basic
 
 Channels are a mechanism for communicating between coroutines. This Channel does nothing on its own - you need to send some data to it.
-This quality of channels is called `Hot.` Channels are `Hot` because a coroutine publishes to the Channel without the receiver needed.
+This quality of channels is called `Hot`. Channels are `Hot`, because a coroutine publishes to the Channel without the receiver needed.
  
 In the [NumberPrinter.kt](https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/NumberPrinter.kt)
 I launch coroutines to send numbers from 0 to 9 to a channel. Meanwhile, another coroutine listens to the Channel and print numbers to the standard output.
@@ -57,13 +57,14 @@ This sequence takes the first one thousand prime numbers and emits them in a syn
 The advantage of using a sequence instead of a more traditional list for this prime number example is that sequences are unbounded.
 You do not have to guess how many numbers it will take to find the first one thousand primes because sequences can emit a potentially infinite number of values.
 The downside of sequences is that they operate synchronously.
+
 If you had a more complex mathematical operation or were running in a resource-constrained environment, then the need for asynchronous execution becomes more pressing.
 Flows provide a non-blocking solution to data streaming that may feel familiar to you if you have used a reactive streams protocol like RxJava.
 
-In the example, I transform a sequence to flow and collect and print Fibonacci filtered numbers.
+In the example, I transform a sequence to Flow and collect items. After that I print Fibonacci filtered numbers.
 In contrary to Channels, Flows are `Cold.` It means that the sender starts to send to emit messages when the sender starts to collect them.
 
-In the example, I generate the Flow with a flow builder.
+The Flow is generated with `asFlow` method.
 Another option to generate a flow is the `flow` operator. In the example [FlowsV2.kt](https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/FlowsV2.kt),
 I emit messages in a while loop as a flow.
 
@@ -90,7 +91,7 @@ The flow builder approach is hugely flexible for building your custom pipeline o
 
 ## Learn more
 
-Learn more about [coroutines](https://kotlinlang.org/docs/reference/coroutines/basics.html),
-[channels](https://kotlinlang.org/docs/reference/coroutines/channels.html),
-[flows](https://kotlinlang.org/docs/reference/coroutines/flow.html). 
+* [Coroutines](https://kotlinlang.org/docs/reference/coroutines/basics.html)
+* [Channels](https://kotlinlang.org/docs/reference/coroutines/channels.html)
+* [Flows](https://kotlinlang.org/docs/reference/coroutines/flow.html)
 
