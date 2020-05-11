@@ -7,8 +7,8 @@ categories: java algorithms
 
 # Back to Java
 
-I decided to go back to Java and learn more about latest features(Java 14) by applying them in solving algorithms.
-The idiom is "Kill two birds with a one stone".
+I decided to go back to Java and learn more about the latest features(Java 14) by applying them to solving algorithms.
+The idiom is "Kill two birds with one stone."
 
 Algorithms problems can be found here - [Project Euler](https://projecteuler.net/)
 
@@ -20,7 +20,7 @@ GitHub repo with solutions is here - [https://github.com/PavelSusloparov/java-al
 
     SDK is not a part of yum repository, need to download tar.gz, unpack under root into the java location
 
-* Switch from Kotlin to Java is painful, but possible. Java 8 streams help a lot, since I picked up a habbit of using functional programming in Kotlin.
+* Switch from Kotlin to Java is painful, but possible. Java 8 streams help a lot since I picked up a habit of using functional programming in Kotlin.
 
 
 
