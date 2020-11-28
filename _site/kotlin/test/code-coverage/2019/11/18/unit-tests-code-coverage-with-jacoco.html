@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Unit tests code coverage with Jacoco | Pavel Susloparov Personal Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Unit tests code coverage with Jacoco" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Code coverage is a code quality metric. It helps to monitor the application quality trend by storing the metric value over time." />
+<meta property="og:description" content="Code coverage is a code quality metric. It helps to monitor the application quality trend by storing the metric value over time." />
+<link rel="canonical" href="http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html" />
+<meta property="og:url" content="http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html" />
+<meta property="og:site_name" content="Pavel Susloparov Personal Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-18T09:49:36-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html"},"url":"http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html","headline":"Unit tests code coverage with Jacoco","dateModified":"2019-11-18T09:49:36-05:00","datePublished":"2019-11-18T09:49:36-05:00","description":"Code coverage is a code quality metric. It helps to monitor the application quality trend by storing the metric value over time.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Pavel Susloparov Personal Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Unit tests code coverage with Jacoco</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-18T09:49:36-05:00" itemprop="datePublished">Nov 18, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Code coverage is a code quality metric.
+It helps to monitor the application quality trend by storing the metric value over time.</p>
+
+<p>I feel skeptical about having 100% coverage:</p>
+<ul>
+  <li>Instead of writing useful unit tests, developers chasing reaching the threshold coverage number</li>
+  <li>it brings unnecessary coverage for setters and getters</li>
+</ul>
+
+<p>My team found a compromise for 75% code coverage as a quality gate.
+It gives us the power to move forward with features delivery in a reasonable time.</p>
+
+<p>Jacoco plugin gives ability to produce a metric based on JUnit test run.</p>
+
+<p>More about plugin in <a href="https://www.jacoco.org/jacoco/trunk/index.html">https://www.jacoco.org/jacoco/trunk/index.html</a></p>
+
+<p>Make the task run as part of the application test nad you can track the coverage locally.
+The next step is to monitor the metric over time. For that, you can use CI pipeline to publish reports in SonarQube,
+so you can see how product and engineering decisions affect the quality of your applications.</p>
+
+<h2 id="configuration-setup">Configuration setup</h2>
+
+<p>To see the example in code, check <a href="https://github.com/PavelSusloparov/sudoku-workshop">sudoku-workshop</a></p>
+
+<p>build.gradle.kts configuration</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+	<span class="c1">// Code Coverage plugin</span>
+	<span class="n">jacoco</span>
+<span class="p">}</span>
+
+<span class="c1">// Jacoco Plugin</span>
+<span class="nf">jacoco</span> <span class="p">{</span>
+	<span class="n">toolVersion</span> <span class="p">=</span> <span class="s">"0.8.4"</span>
+	<span class="n">reportsDir</span> <span class="p">=</span> <span class="nf">file</span><span class="p">(</span><span class="s">"$buildDir/reports/jacoco"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// Jacoco Coverage Report</span>
+<span class="kd">val</span> <span class="py">jacocoTestReport</span> <span class="k">by</span> <span class="n">tasks</span><span class="p">.</span><span class="nf">getting</span><span class="p">(</span><span class="nc">JacocoReport</span><span class="o">::</span><span class="k">class</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nf">reports</span> <span class="p">{</span>
+		<span class="n">html</span><span class="p">.</span><span class="n">isEnabled</span> <span class="p">=</span> <span class="k">true</span> <span class="c1">// human readable</span>
+		<span class="n">xml</span><span class="p">.</span><span class="n">isEnabled</span> <span class="p">=</span> <span class="k">true</span>  <span class="c1">// required by coveralls</span>
+	<span class="p">}</span>
+	<span class="nf">doLast</span> <span class="p">{</span>
+		<span class="nf">println</span><span class="p">(</span><span class="s">"Jacoco tests coverage report: "</span> <span class="p">+</span> <span class="n">project</span><span class="p">.</span><span class="n">projectDir</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span> <span class="p">+</span> <span class="s">"/build/reports/jacoco/test/html/index.html"</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Jacoco Enforce Code Coverage</span>
+<span class="kd">val</span> <span class="py">jacocoTestCoverageVerification</span> <span class="k">by</span> <span class="n">tasks</span><span class="p">.</span><span class="nf">getting</span><span class="p">(</span><span class="nc">JacocoCoverageVerification</span><span class="o">::</span><span class="k">class</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nf">violationRules</span> <span class="p">{</span>
+		<span class="c1">// Every class should be tested</span>
+		<span class="nf">rule</span> <span class="p">{</span>
+			<span class="n">enabled</span> <span class="p">=</span> <span class="k">true</span>
+			<span class="n">element</span> <span class="p">=</span> <span class="s">"CLASS"</span>
+			<span class="n">includes</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="s">"com.example.workshop.*"</span><span class="p">)</span>
+
+			<span class="c1">// Coverage for classes. Strive for 75%.</span>
+			<span class="nf">limit</span> <span class="p">{</span>
+				<span class="n">counter</span> <span class="p">=</span> <span class="s">"CLASS"</span>
+				<span class="n">value</span> <span class="p">=</span> <span class="s">"COVEREDRATIO"</span>
+				<span class="n">minimum</span> <span class="p">=</span> <span class="nc">BigDecimal</span><span class="p">.</span><span class="nf">valueOf</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+
+				<span class="n">excludes</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span>
+					<span class="s">"com.example.workshop.WorkshopApplication"</span><span class="p">,</span>
+					<span class="s">"com.example.workshop.WorkshopApplicationKt"</span><span class="p">,</span>
+					<span class="c1">//Application</span>
+					<span class="s">"com.example.workshop.collections.*"</span><span class="p">,</span>
+					<span class="s">"com.example.workshop.configuration.*"</span><span class="p">,</span>
+					<span class="s">"com.example.workshop.controllers.*"</span>
+				<span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="c1">// Coverage on lines of code. Strive for 75%.</span>
+		<span class="nf">rule</span> <span class="p">{</span>
+			<span class="n">enabled</span> <span class="p">=</span> <span class="k">true</span>
+			<span class="n">element</span> <span class="p">=</span> <span class="s">"CLASS"</span>
+			<span class="n">includes</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="s">"com.example.workshop.*"</span><span class="p">)</span>
+
+			<span class="nf">limit</span> <span class="p">{</span>
+				<span class="n">counter</span> <span class="p">=</span> <span class="s">"LINE"</span>
+				<span class="n">value</span> <span class="p">=</span> <span class="s">"COVEREDRATIO"</span>
+				<span class="n">minimum</span> <span class="p">=</span> <span class="nc">BigDecimal</span><span class="p">.</span><span class="nf">valueOf</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+
+				<span class="n">excludes</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span>
+					<span class="s">"com.example.workshop.WorkshopApplication"</span><span class="p">,</span>
+					<span class="s">"com.example.workshop.WorkshopApplicationKt"</span><span class="p">,</span>
+					<span class="c1">//Application</span>
+					<span class="s">"com.example.workshop.collections.*"</span><span class="p">,</span>
+					<span class="s">"com.example.workshop.configuration.*"</span><span class="p">,</span>
+					<span class="s">"com.example.workshop.controllers.*"</span>
+				<span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">test</span><span class="p">.</span><span class="nf">finalizedBy</span><span class="p">(</span><span class="n">jacocoTestCoverageVerification</span><span class="p">,</span> <span class="n">jacocoTestReport</span><span class="p">)</span>
+
+<span class="c1">// always run tests before code coverage is collected</span>
+<span class="n">jacocoTestReport</span><span class="p">.</span><span class="nf">dependsOn</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="n">jacocoTestCoverageVerification</span><span class="p">.</span><span class="nf">dependsOn</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In <code class="language-plaintext highlighter-rouge">jacocoTestCoverageVerification,</code> there are two rule sections, which allow you to exclude classes from the code coverage verification.</p>
+
+<p>My advice is to be careful with updating lists, and they might grow if you tend to compromise the quality over the speed of delivery.
+Use code review process and code owners to prevent the list of growing.</p>
+
+  </div><a class="u-url" href="/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Pavel Susloparov Personal Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Pavel Susloparov Personal Blog</li><li><a class="u-email" href="mailto:contact@pavelsusloparov.com">contact@pavelsusloparov.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/PavelSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">PavelSusloparov</span></a></li><li><a href="https://www.twitter.com/PSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">PSusloparov</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Read about programming and software engineering processes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

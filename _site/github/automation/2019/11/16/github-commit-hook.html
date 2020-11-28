@@ -3,17 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Pavel Susloparov Personal Blog | Read about programming and software engineering processes</title>
+<title>GitHub commit hooks for better release notes | Pavel Susloparov Personal Blog</title>
 <meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Pavel Susloparov Personal Blog" />
+<meta property="og:title" content="GitHub commit hooks for better release notes" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Read about programming and software engineering processes" />
-<meta property="og:description" content="Read about programming and software engineering processes" />
-<link rel="canonical" href="http://localhost:4000/404.html" />
-<meta property="og:url" content="http://localhost:4000/404.html" />
+<meta name="description" content="I love using automation for improving the team processes." />
+<meta property="og:description" content="I love using automation for improving the team processes." />
+<link rel="canonical" href="http://localhost:4000/github/automation/2019/11/16/github-commit-hook.html" />
+<meta property="og:url" content="http://localhost:4000/github/automation/2019/11/16/github-commit-hook.html" />
 <meta property="og:site_name" content="Pavel Susloparov Personal Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-16T16:32:36-05:00" />
 <script type="application/ld+json">
-{"url":"http://localhost:4000/404.html","headline":"Pavel Susloparov Personal Blog","description":"Read about programming and software engineering processes","@type":"WebPage","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/github/automation/2019/11/16/github-commit-hook.html"},"url":"http://localhost:4000/github/automation/2019/11/16/github-commit-hook.html","headline":"GitHub commit hooks for better release notes","dateModified":"2019-11-16T16:32:36-05:00","datePublished":"2019-11-16T16:32:36-05:00","description":"I love using automation for improving the team processes.","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
 <body><header class="site-header" role="banner">
@@ -33,26 +35,28 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-<div class="container">
-  <h1>404</h1>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">GitHub commit hooks for better release notes</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-16T16:32:36-05:00" itemprop="datePublished">Nov 16, 2019
+      </time></p>
+  </header>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I love using automation for improving the team processes.</p>
+
+<p>If you need to have a clean commit history and be able to use it for release notes, you want to use GitHub local hook.
+It gives ability to add ticket tracking system number(in my case JIRA) to every commit message automatically.</p>
+
+<p>The trick is to name your branch as feature/PROJ-XXXX-branch-description and for every commit, <code class="language-plaintext highlighter-rouge">PROJ-XXXX</code> prepends
+automatically to the message as <code class="language-plaintext highlighter-rouge">[PROJ-XXXX] commit description</code></p>
+
+<p>Find scripts and installation instruction in <a href="https://github.com/PavelSusloparov/git-hook">https://github.com/PavelSusloparov/git-hook</a></p>
+
+  </div><a class="u-url" href="/github/automation/2019/11/16/github-commit-hook.html" hidden></a>
+</article>
 
       </div>
     </main><footer class="site-footer h-card">

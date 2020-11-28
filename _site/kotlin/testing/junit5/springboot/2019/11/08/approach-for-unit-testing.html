@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Approach for unit testing | Pavel Susloparov Personal Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Approach for unit testing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial." />
+<meta property="og:description" content="The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial." />
+<link rel="canonical" href="http://localhost:4000/kotlin/testing/junit5/springboot/2019/11/08/approach-for-unit-testing.html" />
+<meta property="og:url" content="http://localhost:4000/kotlin/testing/junit5/springboot/2019/11/08/approach-for-unit-testing.html" />
+<meta property="og:site_name" content="Pavel Susloparov Personal Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-08T10:22:36-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/kotlin/testing/junit5/springboot/2019/11/08/approach-for-unit-testing.html"},"url":"http://localhost:4000/kotlin/testing/junit5/springboot/2019/11/08/approach-for-unit-testing.html","headline":"Approach for unit testing","dateModified":"2019-11-08T10:22:36-05:00","datePublished":"2019-11-08T10:22:36-05:00","description":"The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Pavel Susloparov Personal Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Approach for unit testing</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-08T10:22:36-05:00" itemprop="datePublished">Nov 8, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
+Confidence in your code is crucial.</p>
+
+<p>I share two tips to make you better in the art of unit testing.</p>
+
+<h3 id="tip-1-is-use-defined-structure">Tip #1 is ‘Use defined structure.’</h3>
+
+<p>I fun of Kotlin and Spring Boot with dependency injection.
+It gives simple ability to initialize the class under the test and mock out the dependencies.
+Given a class with three dependency injection classes</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">class</span> <span class="nc">ExampleService</span><span class="p">(</span>
+      <span class="kd">val</span> <span class="py">exampleDao</span><span class="p">:</span> <span class="nc">ExampleDao</span><span class="p">,</span>
+      <span class="kd">val</span> <span class="py">exampleClient</span><span class="p">:</span> <span class="nc">ExampleClient</span><span class="p">,</span>
+      <span class="kd">val</span> <span class="py">exampleUtil</span><span class="p">:</span> <span class="nc">ExampleUtil</span>
+<span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">fun</span> <span class="nf">saveExampleDetails</span><span class="p">(</span><span class="n">id</span><span class="p">:</span> <span class="nc">String</span><span class="p">):</span> <span class="nc">String</span> <span class="p">{</span>
+
+        <span class="kd">val</span> <span class="py">exampleDetails</span> <span class="p">=</span> <span class="n">exampleClient</span><span class="p">.</span><span class="nf">fetchExampleDetails</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">exampleEntity</span> <span class="p">=</span> <span class="n">exampleDao</span><span class="p">.</span><span class="nf">save</span><span class="p">(</span><span class="n">exampleUtil</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="n">exampleDetails</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">exampleEntity</span><span class="p">.</span><span class="n">id</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The structure of the test is</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="p">(</span><span class="nc">SpringExtension</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="kd">class</span> <span class="nc">ExampleServiceTest</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">exampleClient</span><span class="p">:</span> <span class="nc">ExampleClient</span>
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">exampleDao</span><span class="p">:</span> <span class="nc">ExampleDao</span>
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">exampleUtil</span><span class="p">:</span> <span class="nc">ExampleUtil</span>
+
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">exampleService</span><span class="p">:</span> <span class="nc">ExampleService</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="k">fun</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">exampleClient</span> <span class="p">=</span> <span class="nf">mock</span><span class="p">()</span>
+        <span class="n">exampleDao</span> <span class="p">=</span> <span class="nf">mock</span><span class="p">()</span>
+        <span class="n">exampleUtil</span> <span class="p">=</span> <span class="nf">mock</span><span class="p">()</span>
+
+        <span class="n">exampleService</span> <span class="p">=</span> <span class="nc">ExampleService</span><span class="p">(</span><span class="n">exampleClient</span><span class="p">,</span> <span class="n">exampleDao</span><span class="p">,</span> <span class="n">exampleUtil</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Nested</span>
+    <span class="nd">@DisplayName</span><span class="p">(</span><span class="s">"saveExampleDetails"</span><span class="p">)</span>
+    <span class="k">internal</span> <span class="k">inner</span> <span class="kd">class</span> <span class="nc">SaveExampleDetails</span> <span class="p">{</span>
+
+        <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">exampleDetails</span><span class="p">:</span> <span class="nc">ExampleDetails</span>
+        <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">exampleEntity</span><span class="p">:</span> <span class="nc">ExampleEntity</span>
+        <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">id</span><span class="p">:</span> <span class="nc">String</span>
+
+        <span class="nd">@BeforeEach</span>
+        <span class="k">fun</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">id</span> <span class="p">=</span> <span class="s">"id"</span>
+
+            <span class="n">exampleDetails</span> <span class="p">=</span> <span class="nc">Fixtures</span><span class="p">.</span><span class="nc">External</span><span class="p">.</span><span class="nf">exampleDetails</span><span class="p">().</span><span class="nf">copy</span><span class="p">(</span>
+                    <span class="n">attribute</span> <span class="p">=</span> <span class="s">"value"</span>
+            <span class="p">)</span>
+            <span class="n">exampleEntity</span> <span class="p">=</span> <span class="nc">Fixtures</span><span class="p">.</span><span class="nc">Entity</span><span class="p">.</span><span class="nf">exampleEntity</span><span class="p">()</span>
+
+            <span class="nf">doReturn</span><span class="p">(</span><span class="n">exampleDetails</span><span class="p">).</span><span class="nf">whenever</span><span class="p">(</span><span class="n">exampleClient</span><span class="p">).</span><span class="nf">fetchExampleDetails</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+            <span class="nf">doReturn</span><span class="p">(</span><span class="n">exampleEntity</span><span class="p">).</span><span class="nf">whenever</span><span class="p">(</span><span class="n">exampleUtil</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="n">exampleEntity</span><span class="p">)</span>
+            <span class="nf">doReturn</span><span class="p">(</span><span class="n">exampleEntity</span><span class="p">).</span><span class="nf">whenever</span><span class="p">(</span><span class="n">exampleDao</span><span class="p">).</span><span class="nf">save</span><span class="p">(</span><span class="n">exampleEntity</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Test</span>
+        <span class="k">fun</span> <span class="nf">`happy</span> <span class="nf">path`</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">exampleService</span><span class="p">.</span><span class="nf">saveExampleDetails</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="nf">run</span> <span class="p">{</span>
+                <span class="nf">assertEquals</span><span class="p">(</span><span class="s">"ids match"</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Test</span>
+        <span class="k">fun</span> <span class="nf">`throws</span> <span class="n">an</span> <span class="n">exception</span> <span class="k">when</span> <span class="n">client</span> <span class="n">throws</span> <span class="n">an</span> <span class="nf">exception`</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nf">doThrow</span><span class="p">(</span><span class="nc">RuntimeException</span><span class="p">()).</span><span class="nf">whenever</span><span class="p">(</span><span class="n">exampleClient</span><span class="p">).</span><span class="nf">fetchExampleDetails</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+
+            <span class="n">assertThrows</span><span class="p">&lt;</span><span class="nc">RuntimeException</span><span class="p">&gt;</span> <span class="p">{</span>  <span class="n">exampleService</span><span class="p">.</span><span class="nf">saveExampleDetails</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Use this template for any class and method under test.
+I recommend to save it under the shortcut in your text editor for reference.
+I love to use IntelijIdea and it has code snapshot shortcut saving functionality.</p>
+
+<p>The breakdown of the structure is the following:</p>
+
+<ul>
+  <li>Define dependencies above the class under the test</li>
+  <li>Initialization happens before each test in the global setup</li>
+  <li>Each method under test has it’s own nested class</li>
+  <li>The nested class defines objects required for the method under the test</li>
+  <li>Setup of the nested class contains initialization for happy path test, which includes objects initialization and mock behavior</li>
+  <li>The happy path contains only action and verification</li>
+  <li>The negative scenario contains modification for the happy path to support the behavior change, action and verification</li>
+</ul>
+
+<h3 id="the-tip-2-is-use-fixtures">The tip #2 is ‘Use Fixtures’.</h3>
+
+<p>Fixtures are the library class, which initializes objects for testing.
+It gives the ability to keep all test objects in one place and avoid creating bulky helper classes per object.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fixtures</span> <span class="p">{</span>
+
+    <span class="kd">class</span> <span class="nc">Entity</span> <span class="p">{</span>
+
+        <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
+            <span class="k">fun</span> <span class="nf">exampleEntity</span><span class="p">()</span> <span class="p">=</span> <span class="nc">ExampleEntity</span><span class="p">(</span>
+                    <span class="n">id</span> <span class="p">=</span> <span class="s">"id"</span><span class="p">,</span>
+                    <span class="n">attribute</span> <span class="p">=</span> <span class="s">"attribute"</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">class</span> <span class="nc">External</span> <span class="p">{</span>
+
+        <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
+            <span class="k">fun</span> <span class="nf">exampleDetails</span><span class="p">()</span> <span class="p">=</span> <span class="nc">ExampleDetails</span><span class="p">(</span>
+                    <span class="n">id</span> <span class="p">=</span> <span class="s">"id"</span><span class="p">,</span>
+                    <span class="n">attribute</span> <span class="p">=</span> <span class="s">"attribute"</span><span class="p">,</span>
+                    <span class="n">date</span> <span class="p">=</span> <span class="nc">LocalDateTime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The trick with Fixture methods is that they don’t have input variables.
+If the object needs to be modified, you can edit it in the place where it is needed - in the test.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">exampleDetails</span> <span class="p">=</span> <span class="nc">Fixtures</span><span class="p">.</span><span class="nc">External</span><span class="p">.</span><span class="nf">exampleDetails</span><span class="p">().</span><span class="nf">copy</span><span class="p">(</span>
+        <span class="n">attribute</span> <span class="p">=</span> <span class="s">"value"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="the-tip-3-is-test-your-dao-with-in-memory-database">The tip #3 is ‘Test your Dao with in-memory database’.</h3>
+
+<p>Have different type testing configuration for Controller, Service and Dao classes
+Controller and Service should use mocks and isolate method under the test.
+Dao should have access to the in memory instance of database, insert data in setup and clean the data in tear down type of methods.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@DataMongoTest</span>
+<span class="nd">@Import</span><span class="p">(</span><span class="nc">MongoConfig</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">RetryConfig</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">ExampleDao</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Nested</span>
+<span class="nd">@DisplayName</span><span class="p">(</span><span class="s">"saveExampleDetails"</span><span class="p">)</span>
+<span class="k">internal</span> <span class="k">inner</span> <span class="kd">class</span> <span class="nc">SaveExampleDetails</span>
+</code></pre></div></div>
+
+<p>Craft your unit tests, style comes with repetition.</p>
+
+  </div><a class="u-url" href="/kotlin/testing/junit5/springboot/2019/11/08/approach-for-unit-testing.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Pavel Susloparov Personal Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Pavel Susloparov Personal Blog</li><li><a class="u-email" href="mailto:contact@pavelsusloparov.com">contact@pavelsusloparov.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/PavelSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">PavelSusloparov</span></a></li><li><a href="https://www.twitter.com/PSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">PSusloparov</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Read about programming and software engineering processes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Dockerize SpringBoot application with JIB | Pavel Susloparov Personal Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Dockerize SpringBoot application with JIB" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic." />
+<meta property="og:description" content="JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic." />
+<link rel="canonical" href="http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html" />
+<meta property="og:url" content="http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html" />
+<meta property="og:site_name" content="Pavel Susloparov Personal Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-19T09:49:36-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html"},"url":"http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html","headline":"Dockerize SpringBoot application with JIB","dateModified":"2019-11-19T09:49:36-05:00","datePublished":"2019-11-19T09:49:36-05:00","description":"JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Pavel Susloparov Personal Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Dockerize SpringBoot application with JIB</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-19T09:49:36-05:00" itemprop="datePublished">Nov 19, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>JIB is the plugin which create a docker container from you SpringBoot application.
+It publishes the image to container registry of your choice.
+Pligin abstracts creation of a docker file and publishing logic.</p>
+
+<p>Find more about JIB in <a href="https://github.com/GoogleContainerTools/jib">https://github.com/GoogleContainerTools/jib</a></p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>To see the example in code, check <a href="https://github.com/PavelSusloparov/sudoku-workshop">sudoku-workshop</a></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="nf">id</span><span class="p">(</span><span class="s">"com.google.cloud.tools.jib"</span><span class="p">)</span> <span class="n">version</span> <span class="s">"1.4.0"</span>
+<span class="p">}</span>
+
+<span class="nf">jib</span> <span class="p">{</span>
+	<span class="nf">container</span> <span class="p">{</span>
+		<span class="n">ports</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="s">"8103"</span><span class="p">)</span>
+		<span class="n">mainClass</span> <span class="p">=</span> <span class="s">"com.workshop.sudokubook.WorkshopApplicationKt"</span>
+
+		<span class="c1">// good defauls intended for Java 8 (&gt;= 8u191) containers</span>
+		<span class="n">jvmFlags</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span>
+			<span class="s">"-server"</span><span class="p">,</span>
+			<span class="s">"-Djava.awt.headless=true"</span><span class="p">,</span>
+			<span class="s">"-XX:InitialRAMFraction=2"</span><span class="p">,</span>
+			<span class="s">"-XX:MinRAMFraction=2"</span><span class="p">,</span>
+			<span class="s">"-XX:MaxRAMFraction=2"</span><span class="p">,</span>
+			<span class="s">"-XX:+UseG1GC"</span><span class="p">,</span>
+			<span class="s">"-XX:MaxGCPauseMillis=100"</span><span class="p">,</span>
+			<span class="s">"-XX:+UseStringDeduplication"</span>
+		<span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Simple configuration gives you three additional gradle tasks.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./gradlew tasks
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+Jib tasks
+<span class="nt">---------</span>
+jib - Builds a container image to a registry.
+jibBuildTar - Builds a container image to a tarball.
+jibDockerBuild - Builds a container image to a Docker daemon.
+</code></pre></div></div>
+
+<p>Run <code class="language-plaintext highlighter-rouge">jibDockerBuild</code> to get the image ready.
+I prefer using <code class="language-plaintext highlighter-rouge">docker-compose</code> to run multiple images together.</p>
+
+<p>Example of the configuration is</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">mysql01</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:latest</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3308:3306"</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">sec.env</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">./conf.d:/etc/mysql/conf.d:ro"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"</span>
+  <span class="na">sudoku</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">sudoku</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sudoku:0.0.1-SNAPSHOT</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">sec.env</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8102:8102"</span>
+  <span class="na">sudoku-book</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">sudoku-book</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sudoku-book:0.0.1-SNAPSHOT</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">sec.env</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8103:8103"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+  <span class="na">start_dependencies</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">dadarek/wait-for-dependencies</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="s">db:3306</span>
+</code></pre></div></div>
+
+<p>Two exciting things in the configuration above:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">dadarek/wait-for-dependencies</code> image, which gives the ability for <code class="language-plaintext highlighter-rouge">sudoku-book</code> wait until
+MySQL will be up and running.</li>
+  <li>Volume configuration for MySQL container contains <code class="language-plaintext highlighter-rouge">docker-entrypoint-initdb.d</code>.
+This is the place to define bootstrap SQL script to seed your database instance with initial data such as custom users, permissions and database schema.</li>
+</ul>
+
+<p>I prefer to wire docker-compose and Gradle in a bash script, which gives a user one button run.
+The advantage is abstract application bootstrap and makes it simple.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nv">ROOT_DIR</span><span class="o">=</span><span class="sb">`</span><span class="nb">dirname</span> <span class="nv">$0</span><span class="sb">`</span>
+<span class="nb">cd</span> <span class="k">${</span><span class="nv">ROOT_DIR</span><span class="k">}</span>
+<span class="nv">ROOT_DIR</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
+
+<span class="c"># Generate image for Sudoku application</span>
+<span class="nb">cd</span> <span class="k">${</span><span class="nv">ROOT_DIR</span><span class="k">}</span>/sudoku
+./gradlew jibDockerBuild
+
+<span class="nb">cd</span> <span class="k">${</span><span class="nv">ROOT_DIR</span><span class="k">}</span>/sudoku-book
+<span class="c"># Generate image for Sudoku Book application</span>
+./gradlew jibDockerBuild
+
+<span class="nb">cd</span> <span class="k">${</span><span class="nv">ROOT_DIR</span><span class="k">}</span>
+<span class="c"># Start both applications</span>
+docker-compose up
+</code></pre></div></div>
+
+<p>I always strive to simplify developer life for onboarding new people to the application and encourage you to invest time in proper setup.</p>
+
+  </div><a class="u-url" href="/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Pavel Susloparov Personal Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Pavel Susloparov Personal Blog</li><li><a class="u-email" href="mailto:contact@pavelsusloparov.com">contact@pavelsusloparov.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/PavelSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">PavelSusloparov</span></a></li><li><a href="https://www.twitter.com/PSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">PSusloparov</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Read about programming and software engineering processes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

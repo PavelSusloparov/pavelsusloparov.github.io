@@ -1,4 +1,232 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-22T18:55:42-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Personal Blog</title><subtitle>Read about programming and software engineering processes</subtitle><entry><title type="html">Evolvability of architectures styles</title><link href="http://localhost:4000/architecture/2019/11/22/evolvability-of-architectures-styles.html" rel="alternate" type="text/html" title="Evolvability of architectures styles" /><published>2019-11-22T17:35:36-05:00</published><updated>2019-11-22T17:35:36-05:00</updated><id>http://localhost:4000/architecture/2019/11/22/evolvability-of-architectures-styles</id><content type="html" xml:base="http://localhost:4000/architecture/2019/11/22/evolvability-of-architectures-styles.html">&lt;h2 id=&quot;architecture-classification&quot;&gt;Architecture classification&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-11-28T13:42:04-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Pavel Susloparov Personal Blog</title><subtitle>Read about programming and software engineering processes</subtitle><entry><title type="html">Python3 - Flask - SQLite</title><link href="http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask.html" rel="alternate" type="text/html" title="Python3 - Flask - SQLite" /><published>2020-11-28T12:15:36-05:00</published><updated>2020-11-28T12:15:36-05:00</updated><id>http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask</id><content type="html" xml:base="http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask.html">&lt;h1 id=&quot;react-app&quot;&gt;React app&lt;/h1&gt;
+
+&lt;p&gt;I wrote a small sample on Python, which includes&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Backend Flask based component&lt;/li&gt;
+  &lt;li&gt;Files publishing to S3&lt;/li&gt;
+  &lt;li&gt;Deployment to AWS Elastic Beanstalk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Source code is here - &lt;a href=&quot;https://github.com/PavelSusloparov/warranty-service&quot;&gt;https://github.com/PavelSusloparov/warranty-service&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The service provides API that will allow the creation and retrieval of warranties.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-depths&quot;&gt;In depths&lt;/h2&gt;
+
+&lt;h3 id=&quot;sqlite&quot;&gt;SqLite&lt;/h3&gt;
+
+&lt;p&gt;The database is a C-language library. It is a lightweight, file base database, perfect for small projects.
+It does not seem suitable for production-like applications due to limitations on simultaneous writes.
+Remember, only one actor can modify a file at a time.&lt;/p&gt;
+
+&lt;p&gt;The full feature set of the SQLite - &lt;a href=&quot;https://www.sqlite.org/features.html&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;server&quot;&gt;Server&lt;/h3&gt;
+
+&lt;p&gt;I found it is much easier to use Flask/Python application comparing with Spring Boot/Java.
+I like specifically the simplicity of the database migration part:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Database schema creates on the app bootstrap; no need for a separate script.&lt;/li&gt;
+  &lt;li&gt;Initial data loads with a python script. Example is &lt;a href=&quot;https://github.com/PavelSusloparov/warranty-service/blob/master/scripts/init_db.py&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A pleasant finding for me was the Marshmallow library. It gives the ability to validate requests and check the data against the defined object during the serialization.
+An example of a request object is &lt;a href=&quot;https://github.com/PavelSusloparov/warranty-service/blob/master/service/schema.py#L45&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The behavior of the validator is clear from the unit tests - &lt;a href=&quot;https://github.com/PavelSusloparov/warranty-service/blob/master/service/tests/test_routes_create_warranty.py#L53&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;s3&quot;&gt;S3&lt;/h3&gt;
+
+&lt;p&gt;Files upload in S3 is extremely intuitive with the Boto3 library. The upload method - &lt;a href=&quot;https://github.com/PavelSusloparov/warranty-service/blob/master/service/routes.py#L64&quot;&gt;link&lt;/a&gt;.
+The upload is async base and does not block the response of the endpoint.&lt;/p&gt;
+
+&lt;h3 id=&quot;aws-elastic-beanstalk&quot;&gt;AWS Elastic Beanstalk&lt;/h3&gt;
+
+&lt;p&gt;The SaaS service makes easier the effort of creating a docker container.
+With Elastic Beanstalk CLI installed locally, you need to deploy command from the project root and answer a set of questions.
+However, it takes effort to install Elastic Beanstalk CLI locally.&lt;/p&gt;
+
+&lt;p&gt;I learned the hard way two things:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The tool works with Python 3.6 max(at least at the point of me doing the POC). So I had to downgrade.&lt;/li&gt;
+  &lt;li&gt;I have to define my installed python binary as the interpreter for the Elasticbeanstalk CLI. Otherwise, it installs Python to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;venv.&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The last bit, which gives me around an hour of head-scratching, is the application entry point.
+By default, Elastic Beanstalk is looking for application.py in the root directory and crashes on bootstrap.
+I had to configure the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aws:elasticbeanstalk:container:python&lt;/code&gt; option to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WSGIPath: service:application&lt;/code&gt; since my project root locates in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./service.&lt;/code&gt;
+I used AWS console, Elasticbeanstalk-&amp;gt;Application-&amp;gt;Configure to set it up. Another option is to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eb configure.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Try to run the project on your local with your AWS credentials.&lt;/p&gt;
+
+&lt;p&gt;Thank you for reading!&lt;/p&gt;</content><author><name></name></author><category term="python" /><category term="flask" /><category term="sqlite" /><category term="aws" /><summary type="html">React app</summary></entry><entry><title type="html">JavaScript - React - GraphQL - MongoDb</title><link href="http://localhost:4000/javascript/graphql/mongodb/2020/05/10/react-graphql-mongodb.html" rel="alternate" type="text/html" title="JavaScript - React - GraphQL - MongoDb" /><published>2020-05-10T21:25:36-04:00</published><updated>2020-05-10T21:25:36-04:00</updated><id>http://localhost:4000/javascript/graphql/mongodb/2020/05/10/react-graphql-mongodb</id><content type="html" xml:base="http://localhost:4000/javascript/graphql/mongodb/2020/05/10/react-graphql-mongodb.html">&lt;h1 id=&quot;react-app&quot;&gt;React app&lt;/h1&gt;
+
+&lt;p&gt;I wrote a small full-stack sample on JavaScript, which includes&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Frontend React based component&lt;/li&gt;
+  &lt;li&gt;Backend GraphQL based component&lt;/li&gt;
+  &lt;li&gt;MongoDB for storing the state&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Source code is here - &lt;a href=&quot;https://github.com/PavelSusloparov/friends-registry&quot;&gt;https://github.com/PavelSusloparov/friends-registry&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The app allows you to add a friend by providing a first and last name and shows the list of current friends.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-depths&quot;&gt;In depths&lt;/h2&gt;
+
+&lt;h3 id=&quot;mongodb&quot;&gt;MongoDB&lt;/h3&gt;
+
+&lt;p&gt;MongoDB is a non-relational database, which has a fast bootstrap as a docker container and a free client.
+Perfect for sample projects, when a document contains all required information.
+I like to run sample databases in a docker container by creating a docker-compose configuration,
+so it is easy to wipe the data and start from scratch.&lt;/p&gt;
+
+&lt;p&gt;Find more information about bootstrap and connection to the database in the repo link above.&lt;/p&gt;
+
+&lt;h3 id=&quot;server&quot;&gt;Server&lt;/h3&gt;
+
+&lt;p&gt;GraphQL server is Apollo server - &lt;a href=&quot;https://www.apollographql.com/docs/apollo-server/&quot;&gt;https://www.apollographql.com/docs/apollo-server/&lt;/a&gt;
+It positions itself as a gateway to combine multiple APIs and provide a clean interface to the frontend component.
+I combined the ORM layer with the Apollo server for the sake and simplicity of the demo project.
+In the production project, I recommend creating a separate backend service with the ORM layer and calling the backend service from the gateway component through an interface.&lt;/p&gt;
+
+&lt;p&gt;Apollo gateway provides a neat browser console with capabilities to execute GraphQL queries. See the project’s documentation for more details.
+The gateway provides three types of interfaces:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Query&lt;/li&gt;
+  &lt;li&gt;Mutation&lt;/li&gt;
+  &lt;li&gt;Subscription&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Queries fetch data; mutations modify data; subscription emits events on data modification with capabilities to react on client-side.&lt;/p&gt;
+
+&lt;h3 id=&quot;client&quot;&gt;Client&lt;/h3&gt;
+
+&lt;p&gt;The client is a React-based application, created using create-react-app bootstrap repo and showcase client connection between React and Apollo GraphQL.
+When a user adds a new friend, the client makes a GraphQL mutation call for the creation of a new friend.
+Since I know the new friend at the moment of the update, I can populate the list of friends with a fake id and refresh the id created by the database on the page refresh.
+Also, the client subscribes to new friends creation events during the application bootstrap, which allows updating the friend list modified by another client without refreshing the web page.
+Only one way to showcase the subscription functionality is to call GraphQL to create friend mutation through the GraphQL console or insert a new friend into the database with MongoDB client.
+In this case, the new friend will appear on the friend’s list without the web page refresh.
+I found the Apollo GraphQL client is much easier for understanding and use for simple use cases comparing with the Redux library.&lt;/p&gt;
+
+&lt;p&gt;Thank you for reading!&lt;/p&gt;</content><author><name></name></author><category term="javaScript" /><category term="graphQL" /><category term="mongoDb" /><summary type="html">React app</summary></entry><entry><title type="html">Back to Java</title><link href="http://localhost:4000/java/algorithms/2020/04/26/back-to-java.html" rel="alternate" type="text/html" title="Back to Java" /><published>2020-04-26T14:35:36-04:00</published><updated>2020-04-26T14:35:36-04:00</updated><id>http://localhost:4000/java/algorithms/2020/04/26/back-to-java</id><content type="html" xml:base="http://localhost:4000/java/algorithms/2020/04/26/back-to-java.html">&lt;h1 id=&quot;back-to-java&quot;&gt;Back to Java&lt;/h1&gt;
+
+&lt;p&gt;I decided to go back to Java and learn more about the latest features(Java 14) by applying them to solving algorithms.
+The idiom is “Kill two birds with one stone.”&lt;/p&gt;
+
+&lt;p&gt;Algorithms problems can be found here - &lt;a href=&quot;https://projecteuler.net/&quot;&gt;Project Euler&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;GitHub repo with solutions is here - &lt;a href=&quot;https://github.com/PavelSusloparov/java-algorithms&quot;&gt;https://github.com/PavelSusloparov/java-algorithms&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;first-impression&quot;&gt;First impression&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Switch Java version to Java 14 is less straightforward comparing with Java 8 and earlier.&lt;/p&gt;
+
+    &lt;p&gt;SDK is not a part of yum repository, need to download tar.gz, unpack under root into the java location&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Switch from Kotlin to Java is painful, but possible. Java 8 streams help a lot since I picked up a habit of using functional programming in Kotlin.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="java" /><category term="algorithms" /><summary type="html">Back to Java</summary></entry><entry><title type="html">Kotlin coroutines. Channels and Flows</title><link href="http://localhost:4000/kotlin/coroutines-channels-flows/2020/01/26/channels-and-flows.html" rel="alternate" type="text/html" title="Kotlin coroutines. Channels and Flows" /><published>2020-01-26T13:35:36-05:00</published><updated>2020-01-26T13:35:36-05:00</updated><id>http://localhost:4000/kotlin/coroutines-channels-flows/2020/01/26/channels-and-flows</id><content type="html" xml:base="http://localhost:4000/kotlin/coroutines-channels-flows/2020/01/26/channels-and-flows.html">&lt;h1 id=&quot;channels-and-flows&quot;&gt;Channels and Flows&lt;/h1&gt;
+
+&lt;p&gt;The structure of your application is defined by how data flows through it.
+Do various components communicate directly?
+Do sources of data expose event listeners so that interested components may subscribe to changes?
+Does your data consistently flow in one direction?&lt;/p&gt;
+
+&lt;p&gt;Whatever your strategy may be, intentionality is critical.
+Channels and flows represent streams of data that you can subscribe to, and they achieve this in different ways.
+Let’s look at Kotlin’s built-in stream support and show how to send data throughout your application.&lt;/p&gt;
+
+&lt;h2 id=&quot;channels&quot;&gt;Channels&lt;/h2&gt;
+
+&lt;h3 id=&quot;channels-basic&quot;&gt;Channels Basic&lt;/h3&gt;
+
+&lt;p&gt;Channels are a mechanism for communicating between coroutines. This Channel does nothing on its own - you need to send some data to it.
+This quality of channels is called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hot&lt;/code&gt;. Channels are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hot&lt;/code&gt;, because a coroutine publishes to the Channel without the receiver needed.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/NumberPrinter.kt&quot;&gt;NumberPrinter.kt&lt;/a&gt;
+I launch coroutines to send numbers from 0 to 9 to a channel. Meanwhile, another coroutine listens to the Channel and print numbers to the standard output.
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runBlocking&lt;/code&gt; operator helps synchronize coroutines.&lt;/p&gt;
+
+&lt;p&gt;Let’s transform the example and separate each of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;launch&lt;/code&gt; body to be a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;suspend&lt;/code&gt; function.
+This type of function allows us to use other &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;suspend&lt;/code&gt; functions inside and invoke function within the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;launch&lt;/code&gt; block.
+The updated version &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/NumberPrinterV2.kt&quot;&gt;NumberPrinterV2.kt&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;channels-application&quot;&gt;Channels application&lt;/h3&gt;
+
+&lt;p&gt;Let’s create a use case for the channels with the publisher/subscriber model.
+I use an application based on &lt;a href=&quot;https://ktor.io/&quot;&gt;Ktor&lt;/a&gt; server, which provides an interface for fetching imaginary character information.
+By calling &lt;a href=&quot;http://127.0.0.1:8080/&quot;&gt;http://127.0.0.1:8080/&lt;/a&gt;, I can fetch one character at a time.
+Implementation of the server routes in &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/character-data-api/src/Application.kt&quot;&gt;Application.kt&lt;/a&gt;.
+Characters parameters in &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/character-data-api/src/Character.kt&quot;&gt;Character.kt&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;: Run the server by applying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./gradlew run&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s write a process, which broadcast characters and prints characters multiple times using non-blocking operations.
+Working example is &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/CharacterFetcher.kt&quot;&gt;CharacterFetcher.kt&lt;/a&gt;
+I use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;publish&lt;/code&gt; method to broadcast characters in an infinitive while loop. In the main method, we receive ten characters and close the Channel.
+Other subscribers won’t be able to receive characters from the Channel after this point.&lt;/p&gt;
+
+&lt;h2 id=&quot;flows&quot;&gt;Flows&lt;/h2&gt;
+
+&lt;h3 id=&quot;flows-basics&quot;&gt;Flows Basics&lt;/h3&gt;
+
+&lt;p&gt;Flows are Kotlin’s way to represent asynchronous, cold streams of data. They are similar to sequences, but they can run asynchronously with a coroutine.&lt;/p&gt;
+
+&lt;p&gt;The flow example in &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/Flows.kt&quot;&gt;Flows.kt&lt;/a&gt;
+This sequence takes the first one thousand prime numbers and emits them in a synchronous stream.
+The advantage of using a sequence instead of a more traditional list for this prime number example is that sequences are unbounded.
+You do not have to guess how many numbers it will take to find the first one thousand primes because sequences can emit a potentially infinite number of values.
+The downside of sequences is that they operate synchronously.&lt;/p&gt;
+
+&lt;p&gt;If you had a more complex mathematical operation or were running in a resource-constrained environment, then the need for asynchronous execution becomes more pressing.
+Flows provide a non-blocking solution to data streaming that may feel familiar to you if you have used a reactive streams protocol like RxJava.&lt;/p&gt;
+
+&lt;p&gt;In the example, I transform a sequence to Flow and collect items. After that I print Fibonacci filtered numbers.
+In contrary to Channels, Flows are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cold.&lt;/code&gt; It means that the sender starts to send to emit messages when the sender starts to collect them.&lt;/p&gt;
+
+&lt;p&gt;The Flow is generated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asFlow&lt;/code&gt; method.
+Another option to generate a flow is the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flow&lt;/code&gt; operator. In the example &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/FlowsV2.kt&quot;&gt;FlowsV2.kt&lt;/a&gt;,
+I emit messages in a while loop as a flow.&lt;/p&gt;
+
+&lt;h3 id=&quot;flows-operators&quot;&gt;Flows operators&lt;/h3&gt;
+
+&lt;p&gt;There are multiple flow operators:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;filter - filter values by given parameter&lt;/li&gt;
+  &lt;li&gt;take - take several elements from the Flow&lt;/li&gt;
+  &lt;li&gt;collect - invoke the Flow and receive items from the Flow. It is a terminal operator.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Because flows are coroutine-based, any time that you bridge the gap between the synchronous and asynchronous world, you will use a terminal operator.&lt;/p&gt;
+
+&lt;p&gt;There is an option to create your operators by creating an extension function for a flow as, &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/FlowsV3.kt&quot;&gt;FlowsV3.kt&lt;/a&gt;.
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filterIfBelowFreezing&lt;/code&gt; is an extension function to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Flow&amp;lt;Int&amp;gt;.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;As a next step, I replace &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filter&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transform&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;emit&lt;/code&gt;, which becomes a flow transformation step &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/FlowsV4.kt&quot;&gt;FlowsV4.kt&lt;/a&gt;.
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filterIfBelowFreezing&lt;/code&gt; is an example of an operator that is simple enough that basing its definition off of the existing filter operator is sensible.
+For a more complex or custom operator, starting from scratch with the transform operator can be the right approach.
+Note that as the take operator, the transform operator is also an experimental part of the coroutines API.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;https://github.com/PavelSusloparov/kotlin-channel-flows/blob/master/channels-and-flows/src/main/kotlin/FlowsV5.kt&quot;&gt;FlowsV5.kt&lt;/a&gt;,
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filterIfBelowFreezing&lt;/code&gt; can work with multiple temperature unit as an argument.
+The flow builder approach is hugely flexible for building your custom pipeline of events.&lt;/p&gt;
+
+&lt;h2 id=&quot;learn-more&quot;&gt;Learn more&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://kotlinlang.org/docs/reference/coroutines/basics.html&quot;&gt;Coroutines&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://kotlinlang.org/docs/reference/coroutines/channels.html&quot;&gt;Channels&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://kotlinlang.org/docs/reference/coroutines/flow.html&quot;&gt;Flows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="kotlin" /><category term="coroutines-channels-flows" /><summary type="html">Channels and Flows</summary></entry><entry><title type="html">Evolvability of architectures styles</title><link href="http://localhost:4000/architecture/2019/11/22/evolvability-of-architectures-styles.html" rel="alternate" type="text/html" title="Evolvability of architectures styles" /><published>2019-11-22T17:35:36-05:00</published><updated>2019-11-22T17:35:36-05:00</updated><id>http://localhost:4000/architecture/2019/11/22/evolvability-of-architectures-styles</id><content type="html" xml:base="http://localhost:4000/architecture/2019/11/22/evolvability-of-architectures-styles.html">&lt;p&gt;The post describes conventional software architecture approaches and compares them based on the given architecture problem.&lt;/p&gt;
+
+&lt;h2 id=&quot;definitions&quot;&gt;Definitions&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Incremental change for the application means that a developer makes a new feature or fix a bug in the application code.&lt;/li&gt;
@@ -12,10 +240,12 @@
 &lt;ul&gt;
   &lt;li&gt;Application metrics&lt;/li&gt;
   &lt;li&gt;Architecture metrics&lt;/li&gt;
+  &lt;li&gt;Business logic metrics&lt;/li&gt;
   &lt;li&gt;Unit tests&lt;/li&gt;
   &lt;li&gt;Contract tests&lt;/li&gt;
   &lt;li&gt;Integration tests&lt;/li&gt;
-  &lt;li&gt;Monitors&lt;/li&gt;
+  &lt;li&gt;Certification for changes&lt;/li&gt;
+  &lt;li&gt;Compliance certification&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;fitness-function-ff-classification&quot;&gt;Fitness function (FF) classification&lt;/h3&gt;
@@ -57,6 +287,8 @@
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&quot;architecture-classifications&quot;&gt;Architecture classifications&lt;/h2&gt;
 
 &lt;p&gt;Since we defined basic definitions, let’s look at the known architectures.
 The table below designed to help consider architecture for a new project or evolve existing project to desired level based on functional and non functional requirements.&lt;/p&gt;
@@ -133,7 +365,7 @@ The table below designed to help consider architecture for a new project or evol
       &lt;td style=&quot;text-align: center&quot;&gt;Easy for component. Medium for application&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;Easy with proper Continuous Integration&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;Easy. Difficult to test e2e scenarios&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Loosely&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Loose&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Mediator_pattern&quot;&gt;Mediators&lt;/a&gt;&lt;/td&gt;
@@ -168,7 +400,7 @@ The table below designed to help consider architecture for a new project or evol
       &lt;td style=&quot;text-align: center&quot;&gt;Easy&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;Easy with proper Continuous Integration&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;Easy&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Loosely&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Loose&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&lt;strong&gt;Server-less&lt;/strong&gt;&lt;/td&gt;
@@ -182,7 +414,7 @@ The table below designed to help consider architecture for a new project or evol
       &lt;td style=&quot;text-align: center&quot;&gt;Easy&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;Easy&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;Easy&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Loosely&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Loose&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -210,7 +442,7 @@ The table below designed to help consider architecture for a new project or evol
   &lt;li&gt;Integration testing is easier in Structured architecture.&lt;/li&gt;
   &lt;li&gt;Contract testing required for Loosely coupled architecture.&lt;/li&gt;
   &lt;li&gt;E2E testing is easier for Tight coupled architecture. Also, it is easier for architecture with synchronous components interaction.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Architecture classification</summary></entry><entry><title type="html">Dockerize SpringBoot application with JIB</title><link href="http://localhost:4000/programming,/gradle,/docker,/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html" rel="alternate" type="text/html" title="Dockerize SpringBoot application with JIB" /><published>2019-11-19T09:49:36-05:00</published><updated>2019-11-19T09:49:36-05:00</updated><id>http://localhost:4000/programming,/gradle,/docker,/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB</id><content type="html" xml:base="http://localhost:4000/programming,/gradle,/docker,/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html">&lt;p&gt;JIB is the plugin which create a docker container from you SpringBoot application.
+&lt;/ul&gt;</content><author><name></name></author><category term="architecture" /><summary type="html">The post describes conventional software architecture approaches and compares them based on the given architecture problem.</summary></entry><entry><title type="html">Dockerize SpringBoot application with JIB</title><link href="http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html" rel="alternate" type="text/html" title="Dockerize SpringBoot application with JIB" /><published>2019-11-19T09:49:36-05:00</published><updated>2019-11-19T09:49:36-05:00</updated><id>http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB</id><content type="html" xml:base="http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html">&lt;p&gt;JIB is the plugin which create a docker container from you SpringBoot application.
 It publishes the image to container registry of your choice.
 Pligin abstracts creation of a docker file and publishing logic.&lt;/p&gt;
 
@@ -329,7 +561,7 @@ The advantage is abstract application bootstrap and makes it simple.&lt;/p&gt;
 docker-compose up
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;I always strive to simplify developer life for onboarding new people to the application and encourage you to invest time in proper setup.&lt;/p&gt;</content><author><name></name></author><summary type="html">JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic.</summary></entry><entry><title type="html">Unit tests code coverage with Jacoco</title><link href="http://localhost:4000/programming,/gradle,/jacoco,/code/coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html" rel="alternate" type="text/html" title="Unit tests code coverage with Jacoco" /><published>2019-11-18T09:49:36-05:00</published><updated>2019-11-18T09:49:36-05:00</updated><id>http://localhost:4000/programming,/gradle,/jacoco,/code/coverage/2019/11/18/unit-tests-code-coverage-with-jacoco</id><content type="html" xml:base="http://localhost:4000/programming,/gradle,/jacoco,/code/coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html">&lt;p&gt;Code coverage is a code quality metric.
+&lt;p&gt;I always strive to simplify developer life for onboarding new people to the application and encourage you to invest time in proper setup.&lt;/p&gt;</content><author><name></name></author><category term="gradle" /><category term="docker" /><category term="jib" /><summary type="html">JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic.</summary></entry><entry><title type="html">Unit tests code coverage with Jacoco</title><link href="http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html" rel="alternate" type="text/html" title="Unit tests code coverage with Jacoco" /><published>2019-11-18T09:49:36-05:00</published><updated>2019-11-18T09:49:36-05:00</updated><id>http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco</id><content type="html" xml:base="http://localhost:4000/kotlin/test/code-coverage/2019/11/18/unit-tests-code-coverage-with-jacoco.html">&lt;p&gt;Code coverage is a code quality metric.
 It helps to monitor the application quality trend by storing the metric value over time.&lt;/p&gt;
 
 &lt;p&gt;I feel skeptical about having 100% coverage:&lt;/p&gt;
@@ -390,7 +622,7 @@ so you can see how product and engineering decisions affect the quality of your 
 			&lt;span class=&quot;nf&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 				&lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;CLASS&quot;&lt;/span&gt;
 				&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;COVEREDRATIO&quot;&lt;/span&gt;
-				&lt;span class=&quot;n&quot;&gt;minimum&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;valueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;minimum&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;valueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
 				&lt;span class=&quot;n&quot;&gt;excludes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;listOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 					&lt;span class=&quot;s&quot;&gt;&quot;com.example.workshop.WorkshopApplication&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -412,7 +644,7 @@ so you can see how product and engineering decisions affect the quality of your 
 			&lt;span class=&quot;nf&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 				&lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;LINE&quot;&lt;/span&gt;
 				&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;COVEREDRATIO&quot;&lt;/span&gt;
-				&lt;span class=&quot;n&quot;&gt;minimum&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;valueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;minimum&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;valueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
 				&lt;span class=&quot;n&quot;&gt;excludes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;listOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 					&lt;span class=&quot;s&quot;&gt;&quot;com.example.workshop.WorkshopApplication&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -437,7 +669,7 @@ so you can see how product and engineering decisions affect the quality of your 
 &lt;p&gt;In &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jacocoTestCoverageVerification,&lt;/code&gt; there are two rule sections, which allow you to exclude classes from the code coverage verification.&lt;/p&gt;
 
 &lt;p&gt;My advice is to be careful with updating lists, and they might grow if you tend to compromise the quality over the speed of delivery.
-Use code review process and code owners to prevent the list of growing.&lt;/p&gt;</content><author><name></name></author><summary type="html">Code coverage is a code quality metric. It helps to monitor the application quality trend by storing the metric value over time.</summary></entry><entry><title type="html">Custom source set for Gradle project</title><link href="http://localhost:4000/programming,/gradle,/testing,/packaging/2019/11/17/source-set-for-gradle-project.html" rel="alternate" type="text/html" title="Custom source set for Gradle project" /><published>2019-11-17T18:32:36-05:00</published><updated>2019-11-17T18:32:36-05:00</updated><id>http://localhost:4000/programming,/gradle,/testing,/packaging/2019/11/17/source-set-for-gradle-project</id><content type="html" xml:base="http://localhost:4000/programming,/gradle,/testing,/packaging/2019/11/17/source-set-for-gradle-project.html">&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Source set&lt;/code&gt; is a package, which has it is own compilation and runtime configuration as well as dependencies.
+Use code review process and code owners to prevent the list of growing.&lt;/p&gt;</content><author><name></name></author><category term="kotlin" /><category term="test" /><category term="code-coverage" /><summary type="html">Code coverage is a code quality metric. It helps to monitor the application quality trend by storing the metric value over time.</summary></entry><entry><title type="html">Custom source set for Gradle project</title><link href="http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html" rel="alternate" type="text/html" title="Custom source set for Gradle project" /><published>2019-11-17T18:32:36-05:00</published><updated>2019-11-17T18:32:36-05:00</updated><id>http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project</id><content type="html" xml:base="http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html">&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Source set&lt;/code&gt; is a package, which has it is own compilation and runtime configuration as well as dependencies.
 IntelijIdea project builder creates &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test&lt;/code&gt; source sets for a Gradle project module by default.&lt;/p&gt;
 
 &lt;p&gt;My two reasons why you want to create a custom source set:&lt;/p&gt;
@@ -541,7 +773,7 @@ source set.&lt;/p&gt;
 &lt;p&gt;Custom source set always extends &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; configuration,
 so it has a similar three types of dependencies with your registered keywords.&lt;/p&gt;
 
-&lt;p&gt;Try to use source sets on your project, and I personally found them useful.&lt;/p&gt;</content><author><name></name></author><summary type="html">Source set is a package, which has it is own compilation and runtime configuration as well as dependencies. IntelijIdea project builder creates main and test source sets for a Gradle project module by default.</summary></entry><entry><title type="html">GitHub commit hooks for better release notes</title><link href="http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook.html" rel="alternate" type="text/html" title="GitHub commit hooks for better release notes" /><published>2019-11-16T16:32:36-05:00</published><updated>2019-11-16T16:32:36-05:00</updated><id>http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook</id><content type="html" xml:base="http://localhost:4000/programming,/github,/automation/2019/11/16/github-commit-hook.html">&lt;p&gt;I love using automation for improving the team processes.&lt;/p&gt;
+&lt;p&gt;Try to use source sets on your project, and I personally found them useful.&lt;/p&gt;</content><author><name></name></author><category term="kotlin" /><category term="test" /><category term="source-sets" /><summary type="html">Source set is a package, which has it is own compilation and runtime configuration as well as dependencies. IntelijIdea project builder creates main and test source sets for a Gradle project module by default.</summary></entry><entry><title type="html">GitHub commit hooks for better release notes</title><link href="http://localhost:4000/github/automation/2019/11/16/github-commit-hook.html" rel="alternate" type="text/html" title="GitHub commit hooks for better release notes" /><published>2019-11-16T16:32:36-05:00</published><updated>2019-11-16T16:32:36-05:00</updated><id>http://localhost:4000/github/automation/2019/11/16/github-commit-hook</id><content type="html" xml:base="http://localhost:4000/github/automation/2019/11/16/github-commit-hook.html">&lt;p&gt;I love using automation for improving the team processes.&lt;/p&gt;
 
 &lt;p&gt;If you need to have a clean commit history and be able to use it for release notes, you want to use GitHub local hook.
 It gives ability to add ticket tracking system number(in my case JIRA) to every commit message automatically.&lt;/p&gt;
@@ -549,7 +781,7 @@ It gives ability to add ticket tracking system number(in my case JIRA) to every 
 &lt;p&gt;The trick is to name your branch as feature/PROJ-XXXX-branch-description and for every commit, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PROJ-XXXX&lt;/code&gt; prepends
 automatically to the message as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[PROJ-XXXX] commit description&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Find scripts and installation instruction in &lt;a href=&quot;https://github.com/PavelSusloparov/git-hook&quot;&gt;https://github.com/PavelSusloparov/git-hook&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">I love using automation for improving the team processes.</summary></entry><entry><title type="html">Generate objects based on GraphQL schema</title><link href="http://localhost:4000/programming,/graphql/2019/11/12/generate-objects-based-on-GraphQL-schema.html" rel="alternate" type="text/html" title="Generate objects based on GraphQL schema" /><published>2019-11-12T15:50:36-05:00</published><updated>2019-11-12T15:50:36-05:00</updated><id>http://localhost:4000/programming,/graphql/2019/11/12/generate-objects-based-on-GraphQL-schema</id><content type="html" xml:base="http://localhost:4000/programming,/graphql/2019/11/12/generate-objects-based-on-GraphQL-schema.html">&lt;p&gt;This the post for you if you use microservices architecture and use GraphQL for your API.
+&lt;p&gt;Find scripts and installation instruction in &lt;a href=&quot;https://github.com/PavelSusloparov/git-hook&quot;&gt;https://github.com/PavelSusloparov/git-hook&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="github" /><category term="automation" /><summary type="html">I love using automation for improving the team processes.</summary></entry><entry><title type="html">Generate objects based on GraphQL schema</title><link href="http://localhost:4000/graphql/automation/2019/11/12/generate-objects-based-on-GraphQL-schema.html" rel="alternate" type="text/html" title="Generate objects based on GraphQL schema" /><published>2019-11-12T15:50:36-05:00</published><updated>2019-11-12T15:50:36-05:00</updated><id>http://localhost:4000/graphql/automation/2019/11/12/generate-objects-based-on-GraphQL-schema</id><content type="html" xml:base="http://localhost:4000/graphql/automation/2019/11/12/generate-objects-based-on-GraphQL-schema.html">&lt;p&gt;This the post for you if you use microservices architecture and use GraphQL for your API.
 I’m sharing two tips on how to keep GraphQL contracts up-to-date between server and client.&lt;/p&gt;
 
 &lt;h3 id=&quot;tip-1-is-generate-your-server-side-model&quot;&gt;Tip #1 is ‘Generate your server side model’&lt;/h3&gt;
@@ -624,398 +856,4 @@ The second command generates typescript types and interfaces based on generatedS
 &lt;/ul&gt;
 
 &lt;p&gt;The server needs objects for whole GraphQL schema
-The client needs objects based on server GraphQL schema and client GraphQL queries.&lt;/p&gt;</content><author><name></name></author><summary type="html">This the post for you if you use microservices architecture and use GraphQL for your API. I’m sharing two tips on how to keep GraphQL contracts up-to-date between server and client.</summary></entry><entry><title type="html">DataDog metrics with Spring Boot and Micrometer</title><link href="http://localhost:4000/programming,/springboot,/datadog/2019/11/10/DataDog-metrics-with-spring-boot-and-micrometer.html" rel="alternate" type="text/html" title="DataDog metrics with Spring Boot and Micrometer" /><published>2019-11-10T14:20:36-05:00</published><updated>2019-11-10T14:20:36-05:00</updated><id>http://localhost:4000/programming,/springboot,/datadog/2019/11/10/DataDog-metrics-with-spring-boot-and-micrometer</id><content type="html" xml:base="http://localhost:4000/programming,/springboot,/datadog/2019/11/10/DataDog-metrics-with-spring-boot-and-micrometer.html">&lt;p&gt;Monitoring is crucial when it comes to application support. In this post, I would show how to manage to send metrics to
-DataDog and keep the way consistent between multiple applications within the organization.&lt;/p&gt;
-
-&lt;p&gt;I fun of the Spring Boot framework and use Kotlin as a programming language. The library which is responsible for sending
-interface is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;io.micrometer:micrometer-core:&amp;lt;version&amp;gt;&lt;/code&gt;. In my case version is 1.1.7&lt;/p&gt;
-
-&lt;p&gt;The idea is to provide a unified approach so people easily can understand while switching between multiple applications.
-The easiest way is to create a shared library and store the jar in a place where other application can get access to.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSenderInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;recordTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sendGaugeUpdate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;updatedValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;incrementCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;recordDistribution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Section interface for Enum&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Usage:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * enum class MetricSections(override val value: String):&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;    MetricSectionsInterface {&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   COMPONENT_NAME_1(&quot;component_name_1&quot;),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   COMPONENT_NAME_2(&quot;component_name_2&quot;);&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * }&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSectionsInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Target interface for Enum&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * enum class MetricTargets(override val value: String):&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;    MetricTargetsInterface {&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   OBJECT_NAME_1(&quot;object_name_1&quot;),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   OBJECT_NAME_2(&quot;object_name_2&quot;);&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * }&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricTargetsInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Actions interface for Enum&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * enum class MetricActions(override val value: String):&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;    MetricActionsInterface {&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   CREATED(&quot;created&quot;),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   FETCHED(&quot;fetched&quot;),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   UPDATED(&quot;updated&quot;);&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * }&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricActionsInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Actions interface for Enum&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * enum class MetricResults(override val value: String):&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;    MetricResultsInterface {&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   SUCCESS(&quot;success&quot;),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *   FAIL(&quot;fail&quot;);&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * }&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricResultsInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;-&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;_&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;_&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toLowerCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Micrometer has a bug in tags creation function&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * and does not handle nullable strings&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * or empty strings well for tags,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * so we are adding that logic here&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tagValidator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;isNullOrEmpty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Invalid tags: ${tags.contentToString()}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
-        &lt;span class=&quot;s&quot;&gt;&quot;Tag size must be even,
-&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contentToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Transform multiple key/values strings to a list of tags&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createTagsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MutableList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;tagsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MutableList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mutableListOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;tagsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tagsList&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Usage:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * var metricSender = MetricSender(MetricSections.COMPONENT_NAME_1,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                                   MetricTargets.OBJECT_NAME_1,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                                   MetricActions.CREATED,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                                   MetricResults.SUCCESS)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * metricSender.incrementCounter(&quot;status_code&quot;, HttpStatus.OK.toString(),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                                 &quot;url&quot;, &quot;/test&quot;, &quot;method&quot;, &quot;POST&quot;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;section&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSectionsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricTargetsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricActionsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricResultsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;application&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSenderInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;metricName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getMetricName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                                   &lt;span class=&quot;n&quot;&gt;section&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                                   &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                                   &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                                   &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getMetricName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                              &lt;span class=&quot;n&quot;&gt;section&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSectionsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                              &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricTargetsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                              &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricActionsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                              &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricResultsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; 
-        &lt;span class=&quot;s&quot;&gt;&quot;$applicationName.${section.value}.${target.value}.${action.value}.${result.value}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-    &lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     * Transform static method to instance method for testing&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     */&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;metricsCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metricName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Metrics&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metricName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createTagsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     * Tracks a monotonically increasing value.&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     */&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;incrementCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nf&quot;&gt;tagValidator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;incrementCounter :: name: $metricName,
-&lt;/span&gt;                        &lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contentToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;)
-&lt;/span&gt;            &lt;span class=&quot;nf&quot;&gt;metricsCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;$metricName.counter&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;warn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;incrementCounter :: name: $metricName, exception: $e&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;By using an enum as an input, you can restrict client applications of creating free form metrics.&lt;/li&gt;
-  &lt;li&gt;By providing clear documentation for the shared library, you can show an example for client applications the best way of
-utilizing it.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt; that you can extend the interface of MetricSender with any other micrometer functionality,
-since it is a simple wrapper on top of the library.&lt;/p&gt;
-
-&lt;p&gt;With the class above, we can start using it. However, there is a better way to provide the interface with Spring Boot.
-The objective is to avoid specifying applicationName during every class initialization
-and take advantage of Spring Boot’s dependency injection for unit test the fact of sending the metric on the client-side.&lt;/p&gt;
-
-&lt;p&gt;For that, we create a MetricSender factory class.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * Usage:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * metricSender&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * .configure(applicationName,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;              MetricSections.COMPONENT_NAME_1,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;              MetricTargets.OBJECT_NAME_1,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;              MetricActions.CREATED,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;              MetricResults.SUCCESS)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; * .incrementCounter(&quot;status_code&quot;, HttpStatus.OK.toString(),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                     &quot;url&quot;, &quot;/test&quot;, &quot;method&quot;, &quot;POST&quot;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt; */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Metrics&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;section&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSectionsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                  &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricTargetsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                  &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricActionsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                  &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricResultsInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricSender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;section&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And provide the bean for client to use&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Configuration&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MetricsConfig&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     * Usage:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     *&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     * metrics&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     * .configure(MetricSections.COMPONENT_NAME_1,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                  MetricTargets.OBJECT_NAME_1,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                  MetricActions.CREATED,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                  MetricResults.SUCCESS)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     * .incrementCounter(&quot;status_code&quot;, HttpStatus.OK.toString(),&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;                         &quot;url&quot;, &quot;/test&quot;, &quot;method&quot;, &quot;POST&quot;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;     */&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Bean&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;\${spring.application.name}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Metrics&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Metrics&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The client applications should import the bean and define enums, which are specific for there.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MetricsConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClientApplication&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The each client application must have the log aggregator configuration in application.yml&lt;/p&gt;
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;management&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;export&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;statsd&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;flavor&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;datadog&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X.X.X.X&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The recommended approach allows you to start DataDog dashboards and alerts &lt;strong&gt;consistently&lt;/strong&gt;
-with your metrics across all of Spring Boot applications in all environments.&lt;/p&gt;</content><author><name></name></author><summary type="html">Monitoring is crucial when it comes to application support. In this post, I would show how to manage to send metrics to DataDog and keep the way consistent between multiple applications within the organization.</summary></entry><entry><title type="html">Approach for unit testing</title><link href="http://localhost:4000/programming,/junit5,/springboot/2019/11/08/approach-for-unit-testing.html" rel="alternate" type="text/html" title="Approach for unit testing" /><published>2019-11-08T10:22:36-05:00</published><updated>2019-11-08T10:22:36-05:00</updated><id>http://localhost:4000/programming,/junit5,/springboot/2019/11/08/approach-for-unit-testing</id><content type="html" xml:base="http://localhost:4000/programming,/junit5,/springboot/2019/11/08/approach-for-unit-testing.html">&lt;p&gt;The quality code must be unit tested. It gives code supportability, regression verification, and live documentation.
-Confidence in your code is crucial.&lt;/p&gt;
-
-&lt;p&gt;I share two tips to make you better in the art of unit testing.&lt;/p&gt;
-
-&lt;h3 id=&quot;tip-1-is-use-defined-structure&quot;&gt;Tip #1 is ‘Use defined structure.’&lt;/h3&gt;
-
-&lt;p&gt;I fun of Kotlin and Spring Boot with dependency injection.
-It gives simple ability to initialize the class under the test and mock out the dependencies.
-Given a class with three dependency injection classes&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-      &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleDao&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDao&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleUtil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleUtil&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;saveExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleDetails&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetchExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleEntity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleDao&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleUtil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The structure of the test is&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@ExtendWith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SpringExtension&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleServiceTest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleClient&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleDao&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDao&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleUtil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleUtil&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleService&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@BeforeEach&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exampleClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exampleDao&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;exampleUtil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;exampleService&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleDao&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleUtil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Nested&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@DisplayName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;saveExampleDetails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;inner&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SaveExampleDetails&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDetails&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleEntity&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;
-
-        &lt;span class=&quot;nd&quot;&gt;@BeforeEach&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;
-
-            &lt;span class=&quot;n&quot;&gt;exampleDetails&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fixtures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;External&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;value&quot;&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;exampleEntity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fixtures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-            &lt;span class=&quot;nf&quot;&gt;doReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;whenever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetchExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;nf&quot;&gt;doReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;whenever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleUtil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;nf&quot;&gt;doReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;whenever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleDao&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-        &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;`happy&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;path`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;exampleService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;saveExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nf&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ids match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-        &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;`throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;an&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exception&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;an&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;exception`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nf&quot;&gt;doThrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RuntimeException&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;whenever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exampleClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetchExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-            &lt;span class=&quot;n&quot;&gt;assertThrows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RuntimeException&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;exampleService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;saveExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Use this template for any class and method under test.
-I recommend to save it under the shortcut in your text editor for reference.
-I love to use IntelijIdea and it has code snapshot shortcut saving functionality.&lt;/p&gt;
-
-&lt;p&gt;The breakdown of the structure is the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Define dependencies above the class under the test&lt;/li&gt;
-  &lt;li&gt;Initialization happens before each test in the global setup&lt;/li&gt;
-  &lt;li&gt;Each method under test has it’s own nested class&lt;/li&gt;
-  &lt;li&gt;The nested class defines objects required for the method under the test&lt;/li&gt;
-  &lt;li&gt;Setup of the nested class contains initialization for happy path test, which includes objects initialization and mock behavior&lt;/li&gt;
-  &lt;li&gt;The happy path contains only action and verification&lt;/li&gt;
-  &lt;li&gt;The negative scenario contains modification for the happy path to support the behavior change, action and verification&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;the-tip-2-is-use-fixtures&quot;&gt;The tip #2 is ‘Use Fixtures’.&lt;/h3&gt;
-
-&lt;p&gt;Fixtures are the library class, which initializes objects for testing.
-It gives the ability to keep all test objects in one place and avoid creating bulky helper classes per object.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fixtures&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Entity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;companion&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-            &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;exampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleEntity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;attribute&quot;&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;External&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;companion&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-            &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;attribute&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LocalDateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The trick with Fixture methods is that they don’t have input variables.
-If the object needs to be modified, you can edit it in the place where it is needed - in the test.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;exampleDetails&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fixtures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;External&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exampleDetails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;the-tip-3-is-test-your-dao-with-in-memory-database&quot;&gt;The tip #3 is ‘Test your Dao with in-memory database’.&lt;/h3&gt;
-
-&lt;p&gt;Have different type testing configuration for Controller, Service and Dao classes
-Controller and Service should use mocks and isolate method under the test.
-Dao should have access to the in memory instance of database, insert data in setup and clean the data in tear down type of methods.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@DataMongoTest&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@Import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MongoConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RetryConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleDao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@Nested&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@DisplayName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;saveExampleDetails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;inner&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SaveExampleDetails&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Craft your unit tests, style comes with repetition.&lt;/p&gt;</content><author><name></name></author><summary type="html">The quality code must be unit tested. It gives code supportability, regression verification, and live documentation. Confidence in your code is crucial.</summary></entry></feed>
+The client needs objects based on server GraphQL schema and client GraphQL queries.&lt;/p&gt;</content><author><name></name></author><category term="graphQL" /><category term="automation" /><summary type="html">This the post for you if you use microservices architecture and use GraphQL for your API. I’m sharing two tips on how to keep GraphQL contracts up-to-date between server and client.</summary></entry></feed>
