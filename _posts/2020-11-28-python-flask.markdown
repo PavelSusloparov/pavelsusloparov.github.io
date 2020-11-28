@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Python-Flask"
+title: "Python3 - Flask - SQLite"
 date:   2020-11-28 12:15:36 -0500
-categories: python flask
+categories: python flask sqlite aws
 ---
 
 # React app
@@ -61,4 +61,5 @@ I had to configure the `aws:elasticbeanstalk:container:python` option to be `WSG
 I used AWS console, Elasticbeanstalk->Application->Configure to set it up. Another option is to use `eb configure.`
 
 Try to run the project on your local with your AWS credentials.
+
 Thank you for reading! 
