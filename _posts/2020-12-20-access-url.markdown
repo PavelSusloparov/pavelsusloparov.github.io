@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "What happens when you type URL in the browser."
+title: "What happens when you type URL in the browser?"
 date:   2020-12-20 15:15:36 -0500
 categories: networking
 ---
@@ -31,7 +31,7 @@ In addition to simple lookups, such as 'a',
 the lookup table has combinations such as <Shift> + <>>, which results as a '.' in the browser URL.
 
 Keep in mind that there are various keyboard types, which changes how the processor identifies a keypress.
-Learn more about keyboards types [here](https://en.wikipedia.org/wiki/Computer_keyboard)
+Learn more about keyboards types [here](https://en.wikipedia.org/wiki/Computer_keyboard).
 
 ### From keyboard processor to screen
 
@@ -87,7 +87,7 @@ The most popular way to establish a TCP connection is the Three-Way Handshake.
 2. The server receives the TCP segment and sends a TCP segment back with SYN and ACK flags set, and a sequence number is a random number in TCP segment headers.
 3. The client sends a TCP segment with the ACK flag set, and the sequence number is `sequence_number + 1` from the SYN-ACK TCP segment.
 
-There are other ways, like [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) or `Simultaneous Connection Establishment.` 
+There are other ways, like [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) or `Simultaneous Connection Establishment`. 
 
 ## The browser sends an HTTP request to the server.
 
@@ -115,9 +115,9 @@ The `transport layer` labels packets(multiplexing), so the server can put packet
 ## The serve handles the request and sends an HTTP response.
 
 It all depends on the server implementation.
-It can be a standalone machine. It can be a set of machines, which play different roles,
+The server can be a standalone machine. Or, the server can be a set of machines, which play different roles,
 such as Global Load Balancer, Regional Load Balancer, Application server, Database, and other application servers.
-All of the listed components communicate through TCP and can be located in different data centers, essentially locations.
+Listed components communicate through TCP and can be located in different data centers, essentially locations.
 The communication process is very similar to what I described above.
 Eventually, the application server does defined business logic and responds with the HTML object.
 
@@ -162,12 +162,12 @@ Browser prints the result of the `Render-Tree` process with each element.
 2. It creates layers for each element in the Render-Tree.
 3. It paints layouts by drawing them on the screen.
     Inside each layer, the browser paints each pixel based on the layer property. 
-    The process is called `rasterization.`
+    The name of the process is `rasterization.`
     
 ### Compositing
 
 This step draws the result of the paint to the screen.
-In this operation, all layers are sent to the Graphics Processing Unit(GPU) to draw them on the screen.
+In this operation, Graphics Processing Unit(GPU) receives all layers and draw them on the screen.
 
 ## Outro
 
