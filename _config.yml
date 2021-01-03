@@ -23,7 +23,8 @@ email: contact@pavelsusloparov.com
 description: >-
   Read about programming and software engineering processes
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: https://pavelsusloparov.com
+# url: http://127.0.0.1:4000 # apply during local testing
 twitter_username: "PSusloparov"
 github_username:  PavelSusloparov
 

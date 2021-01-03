@@ -3,6 +3,7 @@ layout: post
 title:  "Generate objects based on GraphQL schema"
 date:   2019-11-12 15:50:36 -0500
 categories: graphQL automation
+postId: 3
 ---
 
 This the post for you if you use microservices architecture and use GraphQL for your API.

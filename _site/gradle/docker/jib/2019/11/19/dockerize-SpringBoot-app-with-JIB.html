@@ -15,7 +15,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-19T09:49:36-05:00" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html"},"url":"http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html","headline":"Dockerize SpringBoot application with JIB","dateModified":"2019-11-19T09:49:36-05:00","datePublished":"2019-11-19T09:49:36-05:00","description":"JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"Dockerize SpringBoot application with JIB","dateModified":"2019-11-19T09:49:36-05:00","datePublished":"2019-11-19T09:49:36-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html"},"description":"JIB is the plugin which create a docker container from you SpringBoot application. It publishes the image to container registry of your choice. Pligin abstracts creation of a docker file and publishing logic.","@type":"BlogPosting","url":"http://localhost:4000/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
 <body><header class="site-header" role="banner">
@@ -35,17 +35,7 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Dockerize SpringBoot application with JIB</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-11-19T09:49:36-05:00" itemprop="datePublished">Nov 19, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>JIB is the plugin which create a docker container from you SpringBoot application.
+        <p>JIB is the plugin which create a docker container from you SpringBoot application.
 It publishes the image to container registry of your choice.
 Pligin abstracts creation of a docker file and publishing logic.</p>
 
@@ -166,8 +156,91 @@ docker-compose up
 
 <p>I always strive to simplify developer life for onboarding new people to the application and encourage you to invest time in proper setup.</p>
 
-  </div><a class="u-url" href="/gradle/docker/jib/2019/11/19/dockerize-SpringBoot-app-with-JIB.html" hidden></a>
-</article>
+
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+<script defer type="text/javascript" src="http://localhost:4000/assets/js/firebase-init.js"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firebaseLikeCount = firebase.database().ref('posts/7/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 0,
+                    title: 'Dockerize SpringBoot application with JIB',
+                });
+                document.getElementById("likesCounter").innerHTML = 0;
+            } else {
+                document.getElementById("likesCounter").innerHTML = data["count"];
+            }
+
+        });
+    });
+
+    function like() {
+        var firebaseLikeCount = firebase.database().ref('posts/7/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 1,
+                    title: 'Dockerize SpringBoot application with JIB',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] + 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] + 1;
+            }
+        });
+    }
+
+    function dislike() {
+        var firebaseLikeCount = firebase.database().ref('posts/7/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: -1,
+                    title: 'Dockerize SpringBoot application with JIB',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] - 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] - 1;
+            }
+        });
+    }
+
+
+// }
+
+</script>
+<p>-------------------------------------</p>
+<button type="button" class="btn btn-default" onclick="like()">Like</button>
+<button type="button" class="btn btn-default" onclick="dislike()">Dislike</button>
+<div>
+    <span>Number of people liked the article: </span><span id="likesCounter"></span>
+</div>
+
+
 
       </div>
     </main><footer class="site-footer h-card">

@@ -3,6 +3,7 @@ layout: post
 title:  "Unit tests code coverage with Jacoco"
 date:   2019-11-18 9:49:36 -0500
 categories: kotlin test code-coverage
+postId: 6
 ---
 
 Code coverage is a code quality metric.

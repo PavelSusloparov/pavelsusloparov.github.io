@@ -3,6 +3,7 @@ layout: post
 title: "What happens when you type URL in the browser?"
 date:   2020-12-20 15:15:36 -0500
 categories: networking
+postId: 12
 ---
 
 Simple at first, the topic brings a lot of depth when we speak about each component.

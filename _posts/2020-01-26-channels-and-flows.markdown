@@ -3,6 +3,7 @@ layout: post
 title: "Kotlin coroutines. Channels and Flows"
 date:   2020-01-26 13:35:36 -0500
 categories: kotlin coroutines-channels-flows
+postId: 9
 ---
 
 # Channels and Flows

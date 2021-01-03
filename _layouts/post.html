@@ -1,0 +1,90 @@
+---
+layout: default
+---
+
+{{ content }}
+
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+<script defer type="text/javascript" src="{{ site.url }}/assets/js/firebase-init.js"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firebaseLikeCount = firebase.database().ref('posts/{{ page.postId }}/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 0,
+                    title: '{{ page.title }}',
+                });
+                document.getElementById("likesCounter").innerHTML = 0;
+            } else {
+                document.getElementById("likesCounter").innerHTML = data["count"];
+            }
+
+        });
+    });
+
+    function like() {
+        var firebaseLikeCount = firebase.database().ref('posts/{{ page.postId }}/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 1,
+                    title: '{{ page.title }}',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] + 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] + 1;
+            }
+        });
+    }
+
+    function dislike() {
+        var firebaseLikeCount = firebase.database().ref('posts/{{ page.postId }}/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: -1,
+                    title: '{{ page.title }}',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] - 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] - 1;
+            }
+        });
+    }
+
+
+// }
+
+</script>
+<p>-------------------------------------</p>
+<button type="button" class="btn btn-default" onclick="like()">Like</button>
+<button type="button" class="btn btn-default" onclick="dislike()">Dislike</button>
+<div>
+    <span>Number of people liked the article: </span><span id="likesCounter"></span>
+</div>
+
+

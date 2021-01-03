@@ -3,6 +3,7 @@ layout: post
 title:  "GitHub commit hooks for better release notes"
 date:   2019-11-16 16:32:36 -0500
 categories: github automation
+postId: 4
 ---
 
 I love using automation for improving the team processes.

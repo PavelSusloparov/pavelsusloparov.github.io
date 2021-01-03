@@ -3,6 +3,7 @@ layout: post
 title:  "Evolvability of architectures styles"
 date:   2019-11-22 17:35:36 -0500
 categories: architecture
+postId: 8
 ---
 
 The post describes conventional software architecture approaches and compares them based on the given architecture problem.

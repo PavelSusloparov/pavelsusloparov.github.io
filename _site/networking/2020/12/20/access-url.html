@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>What happens when you type URL in the browser? | Pavel Susloparov Personal Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="What happens when you type URL in the browser?" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Simple at first, the topic brings a lot of depth when we speak about each component." />
+<meta property="og:description" content="Simple at first, the topic brings a lot of depth when we speak about each component." />
+<link rel="canonical" href="http://localhost:4000/networking/2020/12/20/access-url.html" />
+<meta property="og:url" content="http://localhost:4000/networking/2020/12/20/access-url.html" />
+<meta property="og:site_name" content="Pavel Susloparov Personal Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-20T15:15:36-05:00" />
+<script type="application/ld+json">
+{"headline":"What happens when you type URL in the browser?","dateModified":"2020-12-20T15:15:36-05:00","datePublished":"2020-12-20T15:15:36-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/networking/2020/12/20/access-url.html"},"description":"Simple at first, the topic brings a lot of depth when we speak about each component.","@type":"BlogPosting","url":"http://localhost:4000/networking/2020/12/20/access-url.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Pavel Susloparov Personal Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p>Simple at first, the topic brings a lot of depth when we speak about each component.</p>
+
+<p>On the high-level:</p>
+<ol>
+  <li>Enter URL to the browser window.</li>
+  <li>The browser looks up the domain name in Domain Name Server(DNS).</li>
+  <li>The browser initiates a TCP connection to the server.</li>
+  <li>The browser sends an HTTP request to the server.</li>
+  <li>The server handles the request and sends the HTTP response.</li>
+  <li>The browser displays HTML content.</li>
+</ol>
+
+<p>So far, so good. Let’s talk more about each category.</p>
+
+<h2 id="enter-an-url-to-the-browser-window">Enter an URL to the browser window</h2>
+
+<h3 id="from-the-keypress">From the keypress</h3>
+
+<p>When you press your keyboard key, the key presses a switch, completing the circuit behind the key.
+The key matrix is a grid of circuits underneath the keys.
+Completing the circuit allows a tiny amount of information to flow through to the keyboard processor.
+The keyboard processor task compares the circuit’s location on the key matrix to the character map in its read-only memory.</p>
+
+<p>The character map is a lookup table.
+In addition to simple lookups, such as ‘a’,
+the lookup table has combinations such as <Shift> + &lt;&gt;&gt;, which results as a '.' in the browser URL.</Shift></p>
+
+<p>Keep in mind that there are various keyboard types, which changes how the processor identifies a keypress.
+Learn more about keyboards types <a href="https://en.wikipedia.org/wiki/Computer_keyboard">here</a>.</p>
+
+<h3 id="from-keyboard-processor-to-screen">From keyboard processor to screen</h3>
+
+<p>The signal has to carry to the screen next.
+Laptops use internal connectors. Standalone keyboards use Bluetooth or USB or PS/2.
+Next, the keyboard controller analyses the incoming signal and determines it is a system-level command or not.
+For our use case, it is not, and the controller determines the signal as content.
+The browser can work with content signals to see the URL appearing in the browser window while typing.</p>
+
+<h2 id="the-browser-looks-up-the-domain-name-in-domain-name-serverdns">The browser looks up the domain name in Domain Name Server(DNS).</h2>
+
+<p>The browser has to resolve the human-readable hostname to the IP address.
+For that, it needs a lookup table, so it tries to find it in multiple places.
+If the entry exists, it knows the IP address right away and does not proceed to the next step.</p>
+
+<ol>
+  <li>It goes to the browser cache.</li>
+  <li>It goes to the OS local cache.
+    <ul>
+      <li>Browser reaches the local cache through API to <code class="language-plaintext highlighter-rouge">local resolver library,</code> which is part of OS.</li>
+    </ul>
+  </li>
+  <li>It goes to router cache.</li>
+  <li>It goes to the local DNS server.
+    <ul>
+      <li>It is configured on the client machine. An example of a local DNS is <a href="https://en.wikipedia.org/wiki/Google_Public_DNS">Google Public DNS</a>.
+Or, it is your internal service provider, like Comcast. And yes, they know about all websites which you visit.</li>
+    </ul>
+  </li>
+  <li>From the local DNS, it goes to the root server.
+    <ul>
+      <li>This is a high-level domain server, like .com or .io</li>
+    </ul>
+  </li>
+  <li>Root server responds to local DNS with the authoritative name server, which knows about the given hostname.</li>
+  <li>The authoritative name server responds with the end server’s exact IP address back to the local DNS server.</li>
+  <li>Local DNS server calls the end server to verify and get the IP address back.</li>
+  <li>Local DNS responds to the client machine with the IP address of the end server.</li>
+</ol>
+
+<h2 id="the-browser-initiates-a-tcp-connection-to-the-server">The browser initiates a TCP connection to the server.</h2>
+
+<h3 id="protocols-intro">Protocols intro</h3>
+
+<p>Great, the browser knows the address of the end server. Now it wants to send a request to it to get a response with HTML content back.
+However, before that, the client machine needs to establish a connection to the server.</p>
+
+<p>The most common server-to-server communication protocol is <em>HyperText Transfer Protocol</em>(HTTP).
+It knows how to send objects, like HTML files.
+HTTP is an <code class="language-plaintext highlighter-rouge">application layer</code> protocol; it relies on the Transport layer protocol to carry packets through the network.</p>
+
+<p>The most common <code class="language-plaintext highlighter-rouge">transport layer</code> protocol is <em>Transmission Control Protocol</em>(TCP).
+It guarantees message delivery in order.</p>
+
+<p>The most common use for our use case is a persistent connection.
+In short, the browser opens a connection, send data, receives the response 
+and keeps the connection open while some requests are coming from the browser.</p>
+
+<h3 id="establish-the-connection">Establish the connection</h3>
+
+<p>The most popular way to establish a TCP connection is the Three-Way Handshake.</p>
+
+<ol>
+  <li>The client sends a TCP segment with the SYN flag set, and a sequence number is a random number in TCP segment headers(not HTTP headers :) ).</li>
+  <li>The server receives the TCP segment and sends a TCP segment back with SYN and ACK flags set, and a sequence number is a random number in TCP segment headers.</li>
+  <li>The client sends a TCP segment with the ACK flag set, and the sequence number is <code class="language-plaintext highlighter-rouge">sequence_number + 1</code> from the SYN-ACK TCP segment.</li>
+</ol>
+
+<p>There are other ways, like <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> or <code class="language-plaintext highlighter-rouge">Simultaneous Connection Establishment</code>.</p>
+
+<h2 id="the-browser-sends-an-http-request-to-the-server">The browser sends an HTTP request to the server.</h2>
+
+<p>TCP protocol has headers for each TCP segment of information, which essentially metadata to get the request assembled on the receiver side.
+Read more about TCP <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol">here</a></p>
+
+<p>Then <code class="language-plaintext highlighter-rouge">network layer</code> determines how to transfer the packet with information to the end server through a chain of routers.</p>
+
+<p>There are multiple algorithms to keep routers lookup tables up-to-date about their neighbors.
+Read more about the link-state routing protocol <a href="https://en.wikipedia.org/wiki/Link-state_routing_protocol">here</a>.
+In short, it updates each router lookup table about its neighbors and then, using Dijkstra’s algorithm, finds the shortest path in a graph.</p>
+
+<p>Distance-vector routing protocol <a href="https://en.wikipedia.org/wiki/Distance-vector_routing_protocol">here</a>
+In short, it is based on the Bellman-Ford algorithm,
+which through the multiple broadcast repetitive actions update lookup tables based on the neighbor’s lookup tables.</p>
+
+<p>Then <code class="language-plaintext highlighter-rouge">datalink layer</code> needs to frame packets based on the type of the network you use, such as WiFi or LAN, or Ethernet.
+Also, it provides control over the <code class="language-plaintext highlighter-rouge">physical layer,</code> which sends binary data.</p>
+
+<p>With a sequence of hops through the routers, packets reach the server.</p>
+
+<p>On the server-side, the layers go in reverse.
+The <code class="language-plaintext highlighter-rouge">transport layer</code> labels packets(multiplexing), so the server can put packets together(de-multiplexing).</p>
+
+<h2 id="the-serve-handles-the-request-and-sends-an-http-response">The serve handles the request and sends an HTTP response.</h2>
+
+<p>It all depends on the server implementation.
+The server can be a standalone machine. Or, the server can be a set of machines, which play different roles,
+such as Global Load Balancer, Regional Load Balancer, Application server, Database, and other application servers.
+Listed components communicate through TCP and can be located in different data centers, essentially locations.
+The communication process is very similar to what I described above.
+Eventually, the application server does defined business logic and responds with the HTML object.</p>
+
+<h2 id="the-browser-displays-html-content">The browser displays HTML content.</h2>
+
+<p>The browser shows the HTML object on the screen.
+It needs to know how to interpret the set of HTML tags to visual representation.</p>
+
+<h3 id="data-object-model-dom">Data Object Model (DOM)</h3>
+
+<p>The server returns an HTML page in binary stream format with HTTP headers, which define metadata for the HTML object.
+With headers help, the browser interprets the binary stream to readable text.</p>
+
+<p>Then the browser creates a JavaScript object <em>Node</em> for every tag, such as &lt;html&gt;, &lt;body&gt;, &lt;div&gt;.
+Also, it knows the relation between those Nodes’ objects.</p>
+
+<p>The relationships look like a tree structure. It is called the <em>Data Object Model</em>(DOM).
+JavaScript does not understand what DOM is. It is not part of the JavaScript specifications.
+DOM is a high-level WEB API, which provides capabilities to manipulate with it.</p>
+
+<h3 id="cascading-style-sheet-css">Cascading Style Sheet (CSS)</h3>
+
+<p>HTML object can contain CSS. It gives property to an HTML tag.</p>
+
+<p>The browser needs to apply a CSS style to a DOM element.
+It creates <em>CSS Object Model</em>(CSSOM), which has similar to DOM tree structure.
+There is a default version of the CSSOM based on the <code class="language-plaintext highlighter-rouge">user agent stylesheet,</code> which every browser has.
+More about <code class="language-plaintext highlighter-rouge">user agent stylesheet</code> <a href="https://www.w3.org/TR/CSS21/cascade.html#cascade">here</a>.</p>
+
+<p>If there is a custom CSS, it overrides the default value.</p>
+
+<h3 id="render-a-tree">Render a tree</h3>
+
+<p>Then browser combines DOM and CSSOM trees through the <code class="language-plaintext highlighter-rouge">Render-Tree</code> process.</p>
+
+<h3 id="paint">Paint</h3>
+
+<p>Browser prints the result of the <code class="language-plaintext highlighter-rouge">Render-Tree</code> process with each element.</p>
+
+<ol>
+  <li>It creates a layout.
+    <ul>
+      <li>The layout knows each node’s size in pixels and position, which the element needs to be printed on the screen.</li>
+    </ul>
+  </li>
+  <li>It creates layers for each element in the Render-Tree.</li>
+  <li>It paints layouts by drawing them on the screen.
+ Inside each layer, the browser paints each pixel based on the layer property. 
+ The name of the process is <code class="language-plaintext highlighter-rouge">rasterization.</code></li>
+</ol>
+
+<h3 id="compositing">Compositing</h3>
+
+<p>This step draws the result of the paint to the screen.
+In this operation, Graphics Processing Unit(GPU) receives all layers and draw them on the screen.</p>
+
+<h2 id="outro">Outro</h2>
+
+<p><code class="language-plaintext highlighter-rouge">google.com</code> opens in 400ms.
+The browser sends a request, which makes 11 hops transfer each packet of information to the server.
+It receives 86kb of data back.</p>
+
+<p>Try <code class="language-plaintext highlighter-rouge">traceroute google.com</code> in your terminal to check how many hops you have.</p>
+
+<p>Thank you for reading!</p>
+
+
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+<script defer type="text/javascript" src="http://localhost:4000/assets/js/firebase-init.js"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firebaseLikeCount = firebase.database().ref('posts/12/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 0,
+                    title: 'What happens when you type URL in the browser?',
+                });
+                document.getElementById("likesCounter").innerHTML = 0;
+            } else {
+                document.getElementById("likesCounter").innerHTML = data["count"];
+            }
+
+        });
+    });
+
+    function like() {
+        var firebaseLikeCount = firebase.database().ref('posts/12/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 1,
+                    title: 'What happens when you type URL in the browser?',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] + 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] + 1;
+            }
+        });
+    }
+
+    function dislike() {
+        var firebaseLikeCount = firebase.database().ref('posts/12/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: -1,
+                    title: 'What happens when you type URL in the browser?',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] - 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] - 1;
+            }
+        });
+    }
+
+
+// }
+
+</script>
+<p>-------------------------------------</p>
+<button type="button" class="btn btn-default" onclick="like()">Like</button>
+<button type="button" class="btn btn-default" onclick="dislike()">Dislike</button>
+<div>
+    <span>Number of people liked the article: </span><span id="likesCounter"></span>
+</div>
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Pavel Susloparov Personal Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Pavel Susloparov Personal Blog</li><li><a class="u-email" href="mailto:contact@pavelsusloparov.com">contact@pavelsusloparov.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/PavelSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">PavelSusloparov</span></a></li><li><a href="https://www.twitter.com/PSusloparov"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">PSusloparov</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Read about programming and software engineering processes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

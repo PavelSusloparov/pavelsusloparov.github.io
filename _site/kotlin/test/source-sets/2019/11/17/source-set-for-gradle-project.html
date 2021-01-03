@@ -15,7 +15,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-17T18:32:36-05:00" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html"},"url":"http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html","headline":"Custom source set for Gradle project","dateModified":"2019-11-17T18:32:36-05:00","datePublished":"2019-11-17T18:32:36-05:00","description":"Source set is a package, which has it is own compilation and runtime configuration as well as dependencies. IntelijIdea project builder creates main and test source sets for a Gradle project module by default.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"Custom source set for Gradle project","dateModified":"2019-11-17T18:32:36-05:00","datePublished":"2019-11-17T18:32:36-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html"},"description":"Source set is a package, which has it is own compilation and runtime configuration as well as dependencies. IntelijIdea project builder creates main and test source sets for a Gradle project module by default.","@type":"BlogPosting","url":"http://localhost:4000/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
 <body><header class="site-header" role="banner">
@@ -35,17 +35,7 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Custom source set for Gradle project</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-11-17T18:32:36-05:00" itemprop="datePublished">Nov 17, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><code class="language-plaintext highlighter-rouge">Source set</code> is a package, which has it is own compilation and runtime configuration as well as dependencies.
+        <p><code class="language-plaintext highlighter-rouge">Source set</code> is a package, which has it is own compilation and runtime configuration as well as dependencies.
 IntelijIdea project builder creates <code class="language-plaintext highlighter-rouge">main</code> and <code class="language-plaintext highlighter-rouge">test</code> source sets for a Gradle project module by default.</p>
 
 <p>My two reasons why you want to create a custom source set:</p>
@@ -151,8 +141,91 @@ so it has a similar three types of dependencies with your registered keywords.</
 
 <p>Try to use source sets on your project, and I personally found them useful.</p>
 
-  </div><a class="u-url" href="/kotlin/test/source-sets/2019/11/17/source-set-for-gradle-project.html" hidden></a>
-</article>
+
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+<script defer type="text/javascript" src="http://localhost:4000/assets/js/firebase-init.js"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firebaseLikeCount = firebase.database().ref('posts/5/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 0,
+                    title: 'Custom source set for Gradle project',
+                });
+                document.getElementById("likesCounter").innerHTML = 0;
+            } else {
+                document.getElementById("likesCounter").innerHTML = data["count"];
+            }
+
+        });
+    });
+
+    function like() {
+        var firebaseLikeCount = firebase.database().ref('posts/5/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: 1,
+                    title: 'Custom source set for Gradle project',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] + 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] + 1;
+            }
+        });
+    }
+
+    function dislike() {
+        var firebaseLikeCount = firebase.database().ref('posts/5/likeCount');
+        firebaseLikeCount.once('value').then((snapshot) => {
+            const data = snapshot.val();
+
+            if (data == null) {
+                firebaseLikeCount.set({
+                    count: -1,
+                    title: 'Custom source set for Gradle project',
+                });
+            } else {
+                var obj = {};
+                obj["count"] = data["count"] - 1;
+
+                firebaseLikeCount.update(obj, function(error) {
+                    if (error) {
+                        console.error("Ooops! Something went wrong during like count update");
+                    }
+                });
+                document.getElementById("likesCounter").innerHTML = data["count"] - 1;
+            }
+        });
+    }
+
+
+// }
+
+</script>
+<p>-------------------------------------</p>
+<button type="button" class="btn btn-default" onclick="like()">Like</button>
+<button type="button" class="btn btn-default" onclick="dislike()">Dislike</button>
+<div>
+    <span>Number of people liked the article: </span><span id="likesCounter"></span>
+</div>
+
+
 
       </div>
     </main><footer class="site-footer h-card">

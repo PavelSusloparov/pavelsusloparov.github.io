@@ -3,6 +3,7 @@ layout: post
 title: "JavaScript - React - GraphQL - MongoDb"
 date:   2020-05-10 20:25:36 -0500
 categories: javaScript graphQL mongoDb
+postId: 10
 ---
 
 # React app
