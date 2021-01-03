@@ -200,80 +200,145 @@ Dao should have access to the in memory instance of database, insert data in set
 <script>
 
     document.addEventListener("DOMContentLoaded", function() {
-        var firebaseLikeCount = firebase.database().ref('posts/1/likeCount');
-        firebaseLikeCount.once('value').then((snapshot) => {
+        var firebasePost = firebase.database().ref('posts/1');
+        firebasePost.once('value').then((snapshot) => {
             const data = snapshot.val();
             if (data == null) {
-                firebaseLikeCount.set({
-                    count: 0,
+                firebasePost.set({
+                    likeCount: 0,
+                    dislikeCount: 0,
                     title: 'Approach for unit testing',
                 });
-                document.getElementById("likesCounter").innerHTML = 0;
+                document.getElementById("likeCount").innerHTML = 0;
+                document.getElementById("dislikeCount").innerHTML = 0;
             } else {
-                document.getElementById("likesCounter").innerHTML = data["count"];
+                document.getElementById("likeCount").innerHTML = data["likeCount"];
+                document.getElementById("dislikeCount").innerHTML = data["dislikeCount"];
             }
-
+            if (localStorage.getItem("likeCountPressed") == null) {
+                localStorage.setItem("likeCountPressed", "0");
+            }
+            if (localStorage.getItem("dislikeCountPressed") == null) {
+                localStorage.setItem("dislikeCountPressed", "0");
+            }
         });
     });
 
     function like() {
-        var firebaseLikeCount = firebase.database().ref('posts/1/likeCount');
-        firebaseLikeCount.once('value').then((snapshot) => {
+        if (localStorage.getItem("likeCountPressed") === "1") {
+            unLike()
+        } else {
+            var firebasePost = firebase.database().ref('posts/1');
+            firebasePost.once('value').then((snapshot) => {
+                const data = snapshot.val();
+
+                if (data == null) {
+                    firebasePost.set({
+                        likeCount: 0,
+                        dislikeCount: 0,
+                        title: 'Approach for unit testing',
+                    });
+                } else {
+                    var obj = {};
+                    obj["likeCount"] = data["likeCount"] + 1;
+
+                    firebasePost.update(obj, function(error) {
+                        if (error) {
+                            console.error("Ooops! Something went wrong during like count update");
+                        }
+                    });
+                    document.getElementById("likeCount").innerHTML = data["likeCount"] + 1;
+                }
+            });
+            localStorage.setItem("likeCountPressed", "1");
+        }
+    }
+
+    function unLike() {
+        var firebasePost = firebase.database().ref('posts/1');
+        firebasePost.once('value').then((snapshot) => {
             const data = snapshot.val();
 
             if (data == null) {
-                firebaseLikeCount.set({
-                    count: 1,
+                firebasePost.set({
+                    likeCount: 0,
+                    dislikeCount: 0,
                     title: 'Approach for unit testing',
                 });
             } else {
                 var obj = {};
-                obj["count"] = data["count"] + 1;
+                obj["likeCount"] = data["likeCount"] - 1;
 
-                firebaseLikeCount.update(obj, function(error) {
+                firebasePost.update(obj, function(error) {
                     if (error) {
                         console.error("Ooops! Something went wrong during like count update");
                     }
                 });
-                document.getElementById("likesCounter").innerHTML = data["count"] + 1;
+                document.getElementById("likeCount").innerHTML = data["likeCount"] - 1;
             }
         });
+        localStorage.setItem("likeCountPressed", "0");
     }
 
     function dislike() {
-        var firebaseLikeCount = firebase.database().ref('posts/1/likeCount');
-        firebaseLikeCount.once('value').then((snapshot) => {
+        if (localStorage.getItem("dislikeCountPressed") === "1") {
+            unDislike()
+        } else {
+            var firebasePost = firebase.database().ref('posts/1');
+            firebasePost.once('value').then((snapshot) => {
+                const data = snapshot.val();
+
+                if (data == null) {
+                    firebasePost.set({
+                        likeCount: 0,
+                        dislikeCount: 0,
+                        title: 'Approach for unit testing',
+                    });
+                } else {
+                    var obj = {};
+                    obj["dislikeCount"] = data["dislikeCount"] + 1;
+
+                    firebasePost.update(obj, function (error) {
+                        if (error) {
+                            console.error("Ooops! Something went wrong during like count update");
+                        }
+                    });
+                    document.getElementById("dislikeCount").innerHTML = data["dislikeCount"] + 1;
+                }
+            });
+            localStorage.setItem("dislikeCountPressed", "1");
+        }
+    }
+
+    function unDislike() {
+        var firebasePost = firebase.database().ref('posts/1');
+        firebasePost.once('value').then((snapshot) => {
             const data = snapshot.val();
 
             if (data == null) {
-                firebaseLikeCount.set({
-                    count: -1,
+                firebasePost.set({
+                    likeCount: 0,
+                    dislikeCount: 0,
                     title: 'Approach for unit testing',
                 });
             } else {
                 var obj = {};
-                obj["count"] = data["count"] - 1;
+                obj["dislikeCount"] = data["dislikeCount"] - 1;
 
-                firebaseLikeCount.update(obj, function(error) {
+                firebasePost.update(obj, function(error) {
                     if (error) {
                         console.error("Ooops! Something went wrong during like count update");
                     }
                 });
-                document.getElementById("likesCounter").innerHTML = data["count"] - 1;
+                document.getElementById("dislikeCount").innerHTML = data["dislikeCount"] - 1;
             }
         });
+        localStorage.setItem("dislikeCountPressed", "0");
     }
-
-
-// }
-
 </script>
 <p>-------------------------------------</p>
-<button type="button" class="btn btn-default" onclick="like()">Like</button>
-<button type="button" class="btn btn-default" onclick="dislike()">Dislike</button>
-<div>
-    <span>Number of people liked the article: </span><span id="likesCounter"></span>
-</div>
+<button type="button" class="btn btn-default" onclick="like()">Liked</button><span>  </span><span id="likeCount"></span>
+<button type="button" class="btn btn-default" onclick="dislike()">Dislike</button><span>  </span><span id="dislikeCount"></span>
 
 
 
