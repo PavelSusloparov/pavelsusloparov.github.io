@@ -1,0 +1,30 @@
+
+.line {
+    width: 192px;
+    height: 47px;
+    border-bottom: 1px dashed black;
+    margin: 20px 0px;
+}
+
+.attitude-btn input {
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    padding: 10px 20px;
+}
+.attitude-btn input:focus {
+    outline: none;
+    box-shadow: none;
+}
+.attitude-btn input::-moz-focus-inner {
+    border: 0;
+}
+
+.attitude-count {
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    padding: 10px 20px;
+}

@@ -135,6 +135,7 @@ The flow builder approach is hugely flexible for building your custom pipeline o
 <script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
 <script defer type="text/javascript" src="http://localhost:4000/assets/js/firebase-init.js"></script>
+<link rel="stylesheet" href="http://localhost:4000/assets/css/post.css">
 
 <script>
 
@@ -190,6 +191,7 @@ The flow builder approach is hugely flexible for building your custom pipeline o
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            document.getElementById("my-like-btn").src = "http://localhost:4000/assets/icon/like-res-pressed.svg";
             if (localStorage.getItem("dislikeCountPressed") === "1") {
                 unDislike()
             }
@@ -220,6 +222,7 @@ The flow builder approach is hugely flexible for building your custom pipeline o
             }
         });
         localStorage.setItem("likeCountPressed", "0");
+        document.getElementById("my-like-btn").src = "http://localhost:4000/assets/icon/like-res.svg";
     }
 
     function dislike() {
@@ -249,6 +252,7 @@ The flow builder approach is hugely flexible for building your custom pipeline o
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            document.getElementById("my-dislike-btn").src = "http://localhost:4000/assets/icon/dislike-res-pressed.svg";
             if (localStorage.getItem("likeCountPressed") === "1") {
                 unLike()
             }
@@ -279,11 +283,12 @@ The flow builder approach is hugely flexible for building your custom pipeline o
             }
         });
         localStorage.setItem("dislikeCountPressed", "0");
+        document.getElementById("my-dislike-btn").src = "http://localhost:4000/assets/icon/dislike-res.svg";
     }
 </script>
-<p>-------------------------------------</p>
-<input type="image" src="http://localhost:4000/assets/icon/like-res.svg" onclick="like()"><span>  </span><span id="likeCount"></span>
-<input type="image" src="http://localhost:4000/assets/icon/dislike-res.svg" onclick="dislike()"><span>  </span><span id="dislikeCount"></span>
+<div class="line"></div>
+<input id="my-like-btn" class="attitude-btn" type="image" src="http://localhost:4000/assets/icon/like-res.svg" onclick="like()"><span id="my-like-btn-count" class="attitude-count"><span id="likeCount"></span></span>
+<input id="my-dislike-btn" class="attitude-btn" type="image" src="http://localhost:4000/assets/icon/dislike-res.svg" onclick="dislike()"><span id="my-dislike-btn-count" class="attitude-count"><span id="dislikeCount"></span></span>
 
       </div>
     </main><footer class="site-footer h-card">

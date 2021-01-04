@@ -8,6 +8,7 @@ layout: default
 <script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
 <script defer type="text/javascript" src="{{ site.url }}/assets/js/firebase-init.js"></script>
+<link rel="stylesheet" href="{{ site.url }}/assets/css/post.css">
 
 <script>
 
@@ -63,6 +64,7 @@ layout: default
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            document.getElementById("my-like-btn").src = "{{ site.url }}/assets/icon/like-res-pressed.svg";
             if (localStorage.getItem("dislikeCountPressed") === "1") {
                 unDislike()
             }
@@ -93,6 +95,7 @@ layout: default
             }
         });
         localStorage.setItem("likeCountPressed", "0");
+        document.getElementById("my-like-btn").src = "{{ site.url }}/assets/icon/like-res.svg";
     }
 
     function dislike() {
@@ -122,6 +125,7 @@ layout: default
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            document.getElementById("my-dislike-btn").src = "{{ site.url }}/assets/icon/dislike-res-pressed.svg";
             if (localStorage.getItem("likeCountPressed") === "1") {
                 unLike()
             }
@@ -152,8 +156,9 @@ layout: default
             }
         });
         localStorage.setItem("dislikeCountPressed", "0");
+        document.getElementById("my-dislike-btn").src = "{{ site.url }}/assets/icon/dislike-res.svg";
     }
 </script>
-<p>-------------------------------------</p>
-<input type="image" src="{{ site.url }}/assets/icon/like-res.svg" onclick="like()"><span>  </span><span id="likeCount"></span>
-<input type="image" src="{{ site.url }}/assets/icon/dislike-res.svg" onclick="dislike()"><span>  </span><span id="dislikeCount"></span>
+<div class="line"></div>
+<input id="my-like-btn" class="attitude-btn" type="image" src="{{ site.url }}/assets/icon/like-res.svg" onclick="like()"><span id="my-like-btn-count" class="attitude-count"><span id="likeCount"></span></span>
+<input id="my-dislike-btn" class="attitude-btn" type="image" src="{{ site.url }}/assets/icon/dislike-res.svg" onclick="dislike()"><span id="my-dislike-btn-count" class="attitude-count"><span id="dislikeCount"></span></span>
