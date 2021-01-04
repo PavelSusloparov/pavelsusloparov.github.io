@@ -105,6 +105,9 @@ automatically to the message as <code class="language-plaintext highlighter-roug
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            if (localStorage.getItem("dislikeCountPressed") === "1") {
+                unDislike()
+            }
         }
     }
 
@@ -161,6 +164,9 @@ automatically to the message as <code class="language-plaintext highlighter-roug
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            if (localStorage.getItem("likeCountPressed") === "1") {
+                unLike()
+            }
         }
     }
 

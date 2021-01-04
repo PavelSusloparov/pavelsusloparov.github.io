@@ -6,7 +6,7 @@ categories: python flask sqlite aws
 postId: 11
 ---
 
-# React app
+# Python3 - Flask - SQLite
 
 I wrote a small sample on Python, which includes
 * Backend Flask based component

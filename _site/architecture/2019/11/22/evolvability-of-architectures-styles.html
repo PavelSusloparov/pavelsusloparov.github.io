@@ -316,6 +316,9 @@ The table below designed to help consider architecture for a new project or evol
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            if (localStorage.getItem("dislikeCountPressed") === "1") {
+                unDislike()
+            }
         }
     }
 
@@ -372,6 +375,9 @@ The table below designed to help consider architecture for a new project or evol
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            if (localStorage.getItem("likeCountPressed") === "1") {
+                unLike()
+            }
         }
     }
 

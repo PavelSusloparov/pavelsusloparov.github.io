@@ -216,6 +216,9 @@ docker-compose up
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            if (localStorage.getItem("dislikeCountPressed") === "1") {
+                unDislike()
+            }
         }
     }
 
@@ -272,6 +275,9 @@ docker-compose up
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            if (localStorage.getItem("likeCountPressed") === "1") {
+                unLike()
+            }
         }
     }
 

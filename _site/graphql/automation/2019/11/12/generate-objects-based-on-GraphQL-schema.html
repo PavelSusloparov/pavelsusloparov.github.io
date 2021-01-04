@@ -172,6 +172,9 @@ The client needs objects based on server GraphQL schema and client GraphQL queri
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            if (localStorage.getItem("dislikeCountPressed") === "1") {
+                unDislike()
+            }
         }
     }
 
@@ -228,6 +231,9 @@ The client needs objects based on server GraphQL schema and client GraphQL queri
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            if (localStorage.getItem("likeCountPressed") === "1") {
+                unLike()
+            }
         }
     }
 

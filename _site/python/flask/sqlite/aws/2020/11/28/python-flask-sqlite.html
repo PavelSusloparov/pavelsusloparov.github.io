@@ -7,15 +7,15 @@
 <meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Python3 - Flask - SQLite" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="React app" />
-<meta property="og:description" content="React app" />
-<link rel="canonical" href="http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask.html" />
-<meta property="og:url" content="http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask.html" />
+<meta name="description" content="Python3 - Flask - SQLite" />
+<meta property="og:description" content="Python3 - Flask - SQLite" />
+<link rel="canonical" href="http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask-sqlite.html" />
+<meta property="og:url" content="http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask-sqlite.html" />
 <meta property="og:site_name" content="Pavel Susloparov Personal Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-11-28T12:15:36-05:00" />
 <script type="application/ld+json">
-{"headline":"Python3 - Flask - SQLite","dateModified":"2020-11-28T12:15:36-05:00","datePublished":"2020-11-28T12:15:36-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask.html"},"description":"React app","@type":"BlogPosting","url":"http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask.html","@context":"https://schema.org"}</script>
+{"headline":"Python3 - Flask - SQLite","dateModified":"2020-11-28T12:15:36-05:00","datePublished":"2020-11-28T12:15:36-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask-sqlite.html"},"description":"Python3 - Flask - SQLite","@type":"BlogPosting","url":"http://localhost:4000/python/flask/sqlite/aws/2020/11/28/python-flask-sqlite.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Pavel Susloparov Personal Blog" /></head>
 <body><header class="site-header" role="banner">
@@ -35,7 +35,7 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <h1 id="react-app">React app</h1>
+        <h1 id="python3---flask---sqlite">Python3 - Flask - SQLite</h1>
 
 <p>I wrote a small sample on Python, which includes</p>
 <ul>
@@ -160,6 +160,9 @@ I used AWS console, Elasticbeanstalk-&gt;Application-&gt;Configure to set it up.
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            if (localStorage.getItem("dislikeCountPressed") === "1") {
+                unDislike()
+            }
         }
     }
 
@@ -216,6 +219,9 @@ I used AWS console, Elasticbeanstalk-&gt;Application-&gt;Configure to set it up.
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            if (localStorage.getItem("likeCountPressed") === "1") {
+                unLike()
+            }
         }
     }
 

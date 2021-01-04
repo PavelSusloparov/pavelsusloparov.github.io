@@ -338,6 +338,9 @@ with your metrics across all of Spring Boot applications in all environments.</p
                 }
             });
             localStorage.setItem("likeCountPressed", "1");
+            if (localStorage.getItem("dislikeCountPressed") === "1") {
+                unDislike()
+            }
         }
     }
 
@@ -394,6 +397,9 @@ with your metrics across all of Spring Boot applications in all environments.</p
                 }
             });
             localStorage.setItem("dislikeCountPressed", "1");
+            if (localStorage.getItem("likeCountPressed") === "1") {
+                unLike()
+            }
         }
     }
 
