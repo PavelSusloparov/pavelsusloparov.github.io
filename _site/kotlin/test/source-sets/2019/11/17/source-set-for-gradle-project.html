@@ -142,14 +142,40 @@ so it has a similar three types of dependencies with your registered keywords.</
 <p>Try to use source sets on your project, and I personally found them useful.</p>
 
 
-<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
-<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
-<script defer src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
-<script defer type="text/javascript" src="http://localhost:4000/assets/js/firebase-init.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/firebase-init.js"></script>
 <link rel="stylesheet" href="http://localhost:4000/assets/css/post.css">
 
-<script>
+<script src="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.js"></script>
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css" />
+<script type="text/javascript">
+    // FirebaseUI config.
+    var uiConfig = {
+        signInSuccessUrl: 'https://pavelsusloparov.com/',
+        signInOptions: [
+            // Leave the lines as is for the providers you want to offer your users.
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        ],
+        // tosUrl and privacyPolicyUrl accept either url string or a callback
+        // function.
+        // Terms of service url/callback.
+        tosUrl: 'https://pavelsusloparov.com/about/',
+        // Privacy policy url/callback.
+        privacyPolicyUrl: function() {
+            window.location.assign('https://pavelsusloparov.com/about/');
+        }
+    };
 
+    // Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    // The start method will wait until the DOM is loaded.
+    ui.start('#firebaseui-auth-container', uiConfig);
+</script>
+
+<script defer type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         var firebasePost = firebase.database().ref('posts/5');
         firebasePost.once('value').then((snapshot) => {
@@ -298,6 +324,7 @@ so it has a similar three types of dependencies with your registered keywords.</
     }
 </script>
 <div class="line"></div>
+<div id="firebaseui-auth-container"></div>
 <input id="my-like-btn" class="attitude-btn" type="image" src="http://localhost:4000/assets/icon/like-res.svg" onclick="like()"><span id="my-like-btn-count" class="attitude-count"><span id="likeCount"></span></span>
 <input id="my-dislike-btn" class="attitude-btn" type="image" src="http://localhost:4000/assets/icon/dislike-res.svg" onclick="dislike()"><span id="my-dislike-btn-count" class="attitude-count"><span id="dislikeCount"></span></span>
 
